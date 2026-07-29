@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Storefronts Portfolio — 14 live demos</title>
+<title>Portfolio — 17 live demos</title>
 <style>
   :root {
     --bg: #0b0d10; --card: #14171c; --text: #f2f3f5; --muted: #9aa2ad;
@@ -17,8 +17,9 @@
   header { padding: 56px 24px 32px; text-align: center; }
   header h1 { font-size: 28px; margin: 0 0 8px; }
   header p { color: var(--muted); max-width: 560px; margin: 0 auto; line-height: 1.5; }
+  h2.section { max-width: 1200px; margin: 8px auto 4px; padding: 0 24px; font-size: 14px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
   .grid {
-    display: grid; gap: 20px; max-width: 1200px; margin: 0 auto; padding: 0 24px 64px;
+    display: grid; gap: 20px; max-width: 1200px; margin: 0 auto; padding: 12px 24px 48px;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
   .card {
@@ -29,9 +30,9 @@
     aspect-ratio: 16/10; background: #1b1f25; display: flex; align-items: center; justify-content: center;
     overflow: hidden;
   }
-  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
   .body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-  .body h2 { font-size: 16px; margin: 0; }
+  .body h3 { font-size: 16px; margin: 0; }
   .body p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.45; flex: 1; }
   .actions { display: flex; gap: 8px; margin-top: 4px; }
   .btn {
@@ -44,28 +45,55 @@
 </head>
 <body>
 <header>
-  <h1>Storefronts Portfolio</h1>
-  <p>14 e-commerce &amp; rental storefronts — click any demo to browse and test it live. Source code is private; these are the built, view-only demo builds.</p>
+  <h1>Portfolio</h1>
+  <p>17 products, live and clickable — 14 storefronts &amp; 3 SaaS platforms. Source code is private; these are the built, view-only demo builds.</p>
 </header>
-<div class="grid" id="grid"></div>
+<h2 class="section">SaaS / B2B platforms</h2>
+<div class="grid" id="grid-saas"></div>
+<h2 class="section">Storefronts</h2>
+<div class="grid" id="grid-storefronts"></div>
 <footer>Live demos generated as static builds for portfolio review.</footer>
 <script>
-const projects = [{"slug":"pawscout-petshop","title":"PawsCout Petshop","description":"Pet supplies e-commerce with pet profiles and food subscriptions","thumb":"pawscout-petshop/thumb.svg"},{"slug":"luxora-jewelry","title":"Luxora Jewelry","description":"Jewelry e-commerce with authenticity certificates and secret ring-size quiz","thumb":"luxora-jewelry/thumb.svg"},{"slug":"homeline-appliances","title":"HomeLine Appliances","description":"Home appliances e-commerce with a niche-fit calculator and service bundler","thumb":"homeline-appliances/thumb.svg"},{"slug":"pagebound-books","title":"PageBound Books","description":"Books e-commerce with a taste-based recommender","thumb":"pagebound-books/thumb.svg"},{"slug":"freshcart-grocery","title":"FreshCart Grocery","description":"Grocery delivery e-commerce with real delivery slots","thumb":"freshcart-grocery/thumb.svg"},{"slug":"rentspace-housing","title":"RentSpace Housing","description":"Housing rental marketplace with escrow deposits and commute-time filtering","thumb":"rentspace-housing/thumb.svg"},{"slug":"toolhub-rental","title":"ToolHub Rental","description":"Tool and equipment rental with task-based kit builder and flat-fee insurance","thumb":"toolhub-rental/thumb.svg"},{"slug":"cargo-rental","title":"CarGo Rental","description":"Car rental with a transparent all-in price calculator and pickup/return photo documentation","thumb":"cargo-rental/thumb.svg"},{"slug":"gearloop-rental","title":"GearLoop Rental","description":"Photo/video and event gear rental with a project-based kit builder and real overlap-checked calendar","thumb":"gearloop-rental/thumb.svg"},{"slug":"streetdrop","title":"StreetDrop","description":"Streetwear/sneaker marketplace with hype-drop countdowns and live waitlist queues","thumb":"streetdrop/thumb.svg"},{"slug":"bloomly","title":"Bloomly","description":"Florist storefront with same-day delivery windows and a live card-message builder","thumb":"bloomly/thumb.svg"},{"slug":"toybox","title":"ToyBox","description":"Kids toys & educational products storefront with age filtering and a gift-wrap builder","thumb":"toybox/thumb.svg"},{"slug":"roast-and-leaf","title":"Roast & Leaf","description":"Specialty coffee and tea subscription with a flavor-profile quiz","thumb":"roast-and-leaf/thumb.svg"},{"slug":"soundstage","title":"SoundStage","description":"Musical instrument marketplace with a home-trial period and skill-level recommendations","thumb":"soundstage/thumb.svg"}];
-const grid = document.getElementById('grid');
-for (const p of projects) {
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.innerHTML = `
-    <div class="thumb"><img src="${p.thumb}" alt="${p.title} screenshot" loading="lazy"></div>
-    <div class="body">
-      <h2>${p.title}</h2>
-      <p>${p.description}</p>
-      <div class="actions">
-        <a class="btn primary" href="${p.slug}/" target="_blank" rel="noopener">Open live demo →</a>
-      </div>
-    </div>`;
-  grid.appendChild(card);
+const saas = [
+  {"slug":"roost","title":"Roost","description":"Operations platform for boutique hospitality — unifies bookings, guests, staff and revenue for hotels and short-term rental operators","thumb":"roost/thumb.png"},
+  {"slug":"rostok","title":"Rostok","description":"AI-агенты для маркетплейсов — управляют карточками, отзывами, рекламой и юнит-экономикой на Wildberries и Ozon","thumb":"rostok/thumb.png"},
+  {"slug":"vela","title":"Vela","description":"Multi-currency crypto banking — a premium wallet and card platform to hold, swap and spend digital assets","thumb":"vela/thumb.png"}
+];
+const storefronts = [
+  {"slug":"pawscout-petshop","title":"PawsCout Petshop","description":"Pet supplies e-commerce with pet profiles and food subscriptions","thumb":"pawscout-petshop/thumb.png"},
+  {"slug":"luxora-jewelry","title":"Luxora Jewelry","description":"Jewelry e-commerce with authenticity certificates and secret ring-size quiz","thumb":"luxora-jewelry/thumb.png"},
+  {"slug":"homeline-appliances","title":"HomeLine Appliances","description":"Home appliances e-commerce with a niche-fit calculator and service bundler","thumb":"homeline-appliances/thumb.png"},
+  {"slug":"pagebound-books","title":"PageBound Books","description":"Books e-commerce with a taste-based recommender","thumb":"pagebound-books/thumb.png"},
+  {"slug":"freshcart-grocery","title":"FreshCart Grocery","description":"Grocery delivery e-commerce with real delivery slots","thumb":"freshcart-grocery/thumb.png"},
+  {"slug":"rentspace-housing","title":"RentSpace Housing","description":"Housing rental marketplace with escrow deposits and commute-time filtering","thumb":"rentspace-housing/thumb.png"},
+  {"slug":"toolhub-rental","title":"ToolHub Rental","description":"Tool and equipment rental with task-based kit builder and flat-fee insurance","thumb":"toolhub-rental/thumb.png"},
+  {"slug":"cargo-rental","title":"CarGo Rental","description":"Car rental with a transparent all-in price calculator and pickup/return photo documentation","thumb":"cargo-rental/thumb.png"},
+  {"slug":"gearloop-rental","title":"GearLoop Rental","description":"Photo/video and event gear rental with a project-based kit builder and real overlap-checked calendar","thumb":"gearloop-rental/thumb.png"},
+  {"slug":"streetdrop","title":"StreetDrop","description":"Streetwear/sneaker marketplace with hype-drop countdowns and live waitlist queues","thumb":"streetdrop/thumb.png"},
+  {"slug":"bloomly","title":"Bloomly","description":"Florist storefront with same-day delivery windows and a live card-message builder","thumb":"bloomly/thumb.png"},
+  {"slug":"toybox","title":"ToyBox","description":"Kids toys & educational products storefront with age filtering and a gift-wrap builder","thumb":"toybox/thumb.png"},
+  {"slug":"roast-and-leaf","title":"Roast & Leaf","description":"Specialty coffee and tea subscription with a flavor-profile quiz","thumb":"roast-and-leaf/thumb.png"},
+  {"slug":"soundstage","title":"SoundStage","description":"Musical instrument marketplace with a home-trial period and skill-level recommendations","thumb":"soundstage/thumb.png"}
+];
+function render(list, elId) {
+  const grid = document.getElementById(elId);
+  for (const p of list) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="thumb"><img src="${p.thumb}" alt="${p.title} screenshot" loading="lazy"></div>
+      <div class="body">
+        <h3>${p.title}</h3>
+        <p>${p.description}</p>
+        <div class="actions">
+          <a class="btn primary" href="${p.slug}/" target="_blank" rel="noopener">Open live demo →</a>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  }
 }
+render(saas, 'grid-saas');
+render(storefronts, 'grid-storefronts');
 </script>
 </body>
 </html>

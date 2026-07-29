@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[39756,["/storefronts-demo/vela/_next/static/chunks/3slgcqgx485cs.js","/storefronts-demo/vela/_next/static/chunks/3bq206f9bqfx_.js","/storefronts-demo/vela/_next/static/chunks/3rr22k1malkh0.js","/storefronts-demo/vela/_next/static/chunks/3gka45aefkv52.js","/storefronts-demo/vela/_next/static/chunks/1-8s9_t85wwr4.js","/storefronts-demo/vela/_next/static/chunks/0ce9zjk5_q3eu.js","/storefronts-demo/vela/_next/static/chunks/0kf99oqxlpfh1.js"],"default"]
+3:I[37457,["/storefronts-demo/vela/_next/static/chunks/3slgcqgx485cs.js","/storefronts-demo/vela/_next/static/chunks/3bq206f9bqfx_.js","/storefronts-demo/vela/_next/static/chunks/3rr22k1malkh0.js","/storefronts-demo/vela/_next/static/chunks/3gka45aefkv52.js","/storefronts-demo/vela/_next/static/chunks/1-8s9_t85wwr4.js","/storefronts-demo/vela/_next/static/chunks/0ce9zjk5_q3eu.js","/storefronts-demo/vela/_next/static/chunks/0kf99oqxlpfh1.js"],"default"]
+4:[]
+0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"yPB1s5-5l60XNKA1d9IPs"}

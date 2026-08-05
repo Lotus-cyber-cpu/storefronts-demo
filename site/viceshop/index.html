@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>VICE SHOP</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #101014;
+  }
+  .tg-header {
+    background: #1b1b1f; padding: 14px 16px 10px; display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid #26262b;
+  }
+  .tg-header .title { color: #fff; font-weight: 700; font-size: 15px; flex: 1; }
+  .tg-header .user { display: flex; align-items: center; gap: 6px; }
+  .tg-header .avatar {
+    width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg,#FF7A00,#ffb066);
+    display: flex; align-items: center; justify-content: center; color: #1b1b1f; font-weight: 800; font-size: 11px;
+  }
+  .tg-header .uname { color: #9a9aa5; font-size: 11px; }
+  .screen { min-height: 100vh; background: #101014; padding-bottom: 90px; }
+  .brand { display: flex; align-items: baseline; gap: 2px; padding: 16px 16px 8px; }
+  .brand b { font-style: italic; font-weight: 900; color: #fff; font-size: 20px; }
+  .brand span { font-style: italic; font-weight: 900; color: #fff; background: #FF7A00; padding: 0 5px; border-radius: 5px; font-size: 20px; }
+  .tabs { display: flex; gap: 6px; padding: 4px 16px 14px; }
+  .tab {
+    flex: 1; text-align: center; padding: 8px 0; border-radius: 10px; font-size: 12px; font-weight: 700;
+    color: #9a9aa5; background: #1b1b1f; cursor: pointer; user-select: none; border: 1px solid #26262b;
+  }
+  .tab.active { background: #FF7A00; color: #1b1200; border-color: #FF7A00; }
+  .list { padding: 0 16px; display: flex; flex-direction: column; gap: 10px; }
+  .card {
+    display: flex; gap: 10px; background: #1b1b1f; border: 1px solid #26262b; border-radius: 14px; overflow: hidden;
+  }
+  .art {
+    flex: 0 0 22%; align-self: stretch; border-radius: 0;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    color:#fff; font-size:10px; font-weight:900; text-transform:uppercase; line-height:1.25;
+    padding: 6px; letter-spacing: .3px;
+  }
+  .info { flex: 1; min-width: 0; padding: 12px 12px 12px 2px; display: flex; flex-direction: column; justify-content: center; gap: 3px; }
+  .info .name { color: #fff; font-size: 13.5px; font-weight: 800; letter-spacing: -.1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .info .tags { color: #7a7a85; font-size: 10.5px; font-weight: 600; }
+  .info .price { color: #FF7A00; font-size: 15px; font-weight: 800; margin-top: 2px; }
+  .info .old { color: #55555c; font-size: 11px; font-weight: 600; text-decoration: line-through; margin-left: 7px; }
+  .pillrow { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 1px; }
+  .pill {
+    font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px; border: 1px solid #303038;
+    background: #232328; color: #8a8a92; cursor: pointer; user-select: none; transition: background .15s, color .15s;
+  }
+  .pill.active { background: #FF7A00; color: #1b1200; border-color: #FF7A00; }
+  .addbtn {
+    width: 32px; height: 32px; border-radius: 9px; background: #FF7A00; color: #1b1200;
+    font-size: 18px; font-weight: 900; border: none; cursor: pointer; flex-shrink: 0; align-self: center;
+    margin-right: 10px;
+  }
+  .cart-row { display: flex; align-items: center; gap: 10px; background: #1b1b1f; border: 1px solid #26262b; border-radius: 14px; padding: 10px; }
+  .qty { display: flex; align-items: center; gap: 8px; }
+  .qty button { width: 24px; height: 24px; border-radius: 7px; background: #26262b; color: #fff; border: none; font-weight: 800; cursor: pointer; }
+  .qty span { color: #fff; font-size: 13px; min-width: 14px; text-align: center; }
+  .empty { text-align: center; color: #6a6a75; font-size: 13px; padding: 60px 20px; }
+  .sum-row { display: flex; justify-content: space-between; padding: 14px 16px; color: #9a9aa5; font-size: 13px; }
+  .sum-row b { color: #fff; font-size: 16px; }
+  .order { background: #1b1b1f; border: 1px solid #26262b; border-radius: 14px; padding: 12px; margin: 0 16px 10px; }
+  .order .top { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .order .num { color: #fff; font-size: 12px; font-weight: 700; }
+  .order .status { font-size: 10.5px; font-weight: 800; padding: 2px 8px; border-radius: 6px; background: #16351f; color: #4ade80; }
+  .order .items { color: #9a9aa5; font-size: 11.5px; line-height: 1.5; }
+  .order .total { color: #FF7A00; font-weight: 800; font-size: 13px; margin-top: 6px; }
+  .mainbtn {
+    position: fixed; left: 12px; right: 12px; bottom: 14px;
+    background: #FF7A00; color: #1b1200; border: none; border-radius: 12px;
+    padding: 14px; font-size: 15px; font-weight: 800; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    box-shadow: 0 8px 20px rgba(255,122,0,.35);
+  }
+  .sheet-bg {
+    position: fixed; inset: 0; background: rgba(0,0,0,.55); display: none;
+    align-items: flex-end; z-index: 100;
+  }
+  .sheet-bg.show { display: flex; }
+  .sheet {
+    width: 100%; background: #1b1b1f; border-radius: 20px 20px 0 0; padding: 20px;
+    animation: up .25s ease;
+  }
+  @keyframes up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .sheet h3 { color: #fff; font-size: 15px; margin-bottom: 4px; }
+  .sheet p { color: #9a9aa5; font-size: 12px; margin-bottom: 16px; }
+  .sheet .line { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #26262b; font-size: 12.5px; color: #c8c8cf; }
+  .paybtn {
+    width: 100%; margin-top: 16px; padding: 14px; border-radius: 12px; border: none;
+    background: #4da3ff; color: #fff; font-weight: 800; font-size: 14px; cursor: pointer;
+  }
+  .cancelbtn { width: 100%; margin-top: 8px; padding: 12px; border-radius: 12px; border: none; background: transparent; color: #9a9aa5; font-size: 13px; cursor: pointer; }
+  .success { text-align: center; padding: 40px 20px; }
+  .success .check {
+    width: 64px; height: 64px; border-radius: 50%; background: #16351f; color: #4ade80;
+    font-size: 32px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+  }
+  .success h3 { color: #fff; font-size: 16px; margin-bottom: 6px; }
+  .success p { color: #9a9aa5; font-size: 12.5px; }
+  .badge-note { text-align: center; color: #5a5a63; font-size: 10.5px; padding: 6px 16px 0; }
+</style>
+</head>
+<body>
+
+<div class="tg-header">
+  <span class="title">VICE SHOP</span>
+  <div class="user">
+    <div class="avatar" id="userInitial">?</div>
+    <span class="uname" id="userName">Гость</span>
+  </div>
+</div>
+
+<div class="screen" id="screen"></div>
+
+<script>
+/* ── Telegram Web App SDK ── */
+const tg = window.Telegram?.WebApp || null;
+if (tg) {
+  tg.ready();
+  tg.expand();
+  const u = tg.initDataUnsafe?.user;
+  if (u) {
+    document.getElementById("userName").textContent = u.first_name || u.username || "Игрок";
+    document.getElementById("userInitial").textContent = (u.first_name || "?")[0].toUpperCase();
+  }
+}
+
+/* ── наценка по площадке покупки (демо-цифры, поправь под реальные) ──
+   Steam всегда база (×1). Показывается только то, что реально есть у игры ниже. */
+const PLATFORM_MULT = { "Steam": 1, "Epic Games": 0.97, "PS5": 1.12 };
+
+/* ── каталог: platforms — где игра реально существует, editions — тиражи ── */
+const GAMES = [
+  {
+    id: 1, name: "DOOM", tags: "Шутер", pal: ["#0f2e22","#1d9e75"],
+    platforms: ["Steam", "Epic Games", "PS5"],
+    editions: [
+      { name: "Standard Edition", price: 266, old: 1353 },
+      { name: "Ultimate Edition", price: 449, old: 1899 },
+    ],
+  },
+  {
+    id: 2, name: "Cyberpunk 2077", tags: "RPG", pal: ["#3c1489","#7f77dd"],
+    platforms: ["Steam", "PS5"],
+    editions: [
+      { name: "Standard Edition", price: 1099, old: 2499 },
+      { name: "Ultimate Edition", price: 1999, old: 4999 },
+    ],
+  },
+  {
+    id: 3, name: "Red Dead Redemption 2", tags: "Открытый мир", pal: ["#4a1b0c","#d85a30"],
+    platforms: ["Steam", "Epic Games", "PS5"],
+    editions: [
+      { name: "Standard Edition", price: 999, old: 3999 },
+      { name: "Ultimate Edition", price: 1699, old: 5499 },
+    ],
+  },
+  {
+    id: 4, name: "Mad Max", tags: "Открытый мир", pal: ["#4a1b0c","#993c1d"],
+    platforms: ["Steam", "PS5"],
+    editions: [
+      { name: "Standard Edition", price: 134, old: 1299 },
+      { name: "Ultimate Edition", price: 219, old: 1799 },
+    ],
+  },
+  {
+    id: 5, name: "Ведьмак 3", tags: "RPG", pal: ["#26215c","#534ab7"],
+    platforms: ["Steam", "Epic Games", "PS5"],
+    editions: [
+      { name: "Standard Edition", price: 298, old: 1830 },
+      { name: "Ultimate Edition", price: 595, old: 3049 },
+    ],
+  },
+  {
+    id: 6, name: "Forza Horizon 5", tags: "Гонки", pal: ["#4b1528","#993556"],
+    platforms: ["Steam"],
+    editions: [
+      { name: "Standard Edition", price: 5382, old: 5549 },
+      { name: "Ultimate Edition", price: 6999, old: 7299 },
+    ],
+  },
+  {
+    id: 7, name: "Days Gone", tags: "Выживание", pal: ["#173404","#639922"],
+    platforms: ["Steam", "PS5"],
+    editions: [
+      { name: "Standard Edition", price: 901, old: 3214 },
+      { name: "Ultimate Edition", price: 1299, old: 3999 },
+    ],
+  },
+  {
+    id: 8, name: "Resident Evil Village", tags: "Хоррор", pal: ["#501313","#a32d2d"],
+    platforms: ["Steam", "PS5"],
+    editions: [
+      { name: "Standard Edition", price: 899, old: 2999 },
+      { name: "Ultimate Edition", price: 1499, old: 3999 },
+    ],
+  },
+];
+
+let tab = "catalog";
+let cart = {}; // key = "gameId__platform__edition" -> { gameId, platform, edition, qty }
+let orders = [
+  { num: "#VS-1042", items: "Ведьмак 3 (Steam, Ultimate), Days Gone (PS5, Standard)", total: 1496, status: "Оплачен" },
+];
+
+// выбор платформы/издания по карточке ДО добавления в корзину
+let selection = {};
+GAMES.forEach(g => { selection[g.id] = { platform: g.platforms[0], edition: g.editions[0].name }; });
+
+function priceFor(game, platform, editionName) {
+  const ed = game.editions.find(e => e.name === editionName);
+  const mult = PLATFORM_MULT[platform] ?? 1;
+  return {
+    price: Math.round(ed.price * mult),
+    old: Math.round(ed.old * mult),
+  };
+}
+
+function cartCount() { return Object.values(cart).reduce((a,c)=>a+c.qty,0); }
+function cartSum() {
+  return Object.values(cart).reduce((s,c) => {
+    const g = GAMES.find(x=>x.id===c.gameId);
+    return s + priceFor(g, c.platform, c.edition).price * c.qty;
+  }, 0);
+}
+
+function render() {
+  const el = document.getElementById("screen");
+  let html = `
+    <div class="brand"><b>VICE</b><span>SHOP</span></div>
+    <div class="tabs">
+      <div class="tab ${tab==='catalog'?'active':''}" onclick="setTab('catalog')">Каталог</div>
+      <div class="tab ${tab==='cart'?'active':''}" onclick="setTab('cart')">Корзина${cartCount()?` (${cartCount()})`:''}</div>
+      <div class="tab ${tab==='orders'?'active':''}" onclick="setTab('orders')">Заказы</div>
+    </div>
+  `;
+
+  if (tab === "catalog") {
+    html += `<div class="list">` + GAMES.map(g => {
+      const sel = selection[g.id];
+      const p = priceFor(g, sel.platform, sel.edition);
+      return `
+      <div class="card">
+        <div class="art" style="background:linear-gradient(135deg,${g.pal[0]},${g.pal[1]})">${g.name}</div>
+        <div class="info">
+          <div class="name">${g.name}</div>
+          <div class="tags">${g.tags}</div>
+
+          <div class="pillrow">
+            ${g.platforms.map(pf => `
+              <span class="pill ${sel.platform===pf?'active':''}" onclick="setPlatform(${g.id},'${pf}')">${pf}</span>
+            `).join("")}
+          </div>
+          <div class="pillrow">
+            ${g.editions.map(ed => `
+              <span class="pill ${sel.edition===ed.name?'active':''}" onclick="setEdition(${g.id},'${ed.name}')">${ed.name.replace(' Edition','')}</span>
+            `).join("")}
+          </div>
+
+          <div class="price">${p.price.toLocaleString('ru-RU')} ₽<span class="old">${p.old.toLocaleString('ru-RU')} ₽</span></div>
+        </div>
+        <button class="addbtn" onclick="addToCart(${g.id})">+</button>
+      </div>
+    `;
+    }).join("") + `</div><div class="badge-note">Идентификация — через Telegram, регистрация не нужна</div>`;
+  }
+
+  if (tab === "cart") {
+    const entries = Object.entries(cart);
+    if (!entries.length) {
+      html += `<div class="empty">Корзина пуста.<br>Загляни в каталог — там уже ждут скидки.</div>`;
+    } else {
+      html += `<div class="list">` + entries.map(([key,c]) => {
+        const g = GAMES.find(x=>x.id===c.gameId);
+        const p = priceFor(g, c.platform, c.edition);
+        return `
+        <div class="cart-row">
+          <div class="art" style="background:linear-gradient(135deg,${g.pal[0]},${g.pal[1]});width:44px;height:44px;font-size:8px;">${g.name}</div>
+          <div class="info">
+            <div class="name">${g.name}</div>
+            <div class="tags">${c.platform} · ${c.edition.replace(' Edition','')}</div>
+            <div class="price">${(p.price*c.qty).toLocaleString('ru-RU')} ₽</div>
+          </div>
+          <div class="qty">
+            <button onclick="changeQty('${key}',-1)">−</button>
+            <span>${c.qty}</span>
+            <button onclick="changeQty('${key}',1)">+</button>
+          </div>
+        </div>`;
+      }).join("") + `</div>
+      <div class="sum-row"><span>Итого</span><b>${cartSum().toLocaleString('ru-RU')} ₽</b></div>`;
+    }
+  }
+
+  if (tab === "orders") {
+    if (!orders.length) {
+      html += `<div class="empty">Заказов пока нет.</div>`;
+    } else {
+      html += orders.map(o => `
+        <div class="order">
+          <div class="top"><span class="num">${o.num}</span><span class="status">${o.status}</span></div>
+          <div class="items">${o.items}</div>
+          <div class="total">${o.total.toLocaleString('ru-RU')} ₽</div>
+        </div>
+      `).join("");
+    }
+  }
+
+  html += `
+    <div class="sheet-bg" id="sheetBg">
+      <div class="sheet" id="sheetContent"></div>
+    </div>
+  `;
+
+  el.innerHTML = html;
+  updateMainButton();
+}
+
+function updateMainButton() {
+  document.querySelectorAll(".mainbtn").forEach(b => b.remove());
+  const show = tab === "cart" && cartCount() > 0;
+
+  if (tg) {
+    if (show) {
+      tg.MainButton.setText(`Оплатить ${cartSum().toLocaleString('ru-RU')} ₽`);
+      tg.MainButton.show();
+      tg.MainButton.offClick(openInvoice);
+      tg.MainButton.onClick(openInvoice);
+    } else {
+      tg.MainButton.hide();
+    }
+    return;
+  }
+
+  if (show) {
+    const btn = document.createElement("button");
+    btn.className = "mainbtn";
+    btn.innerText = `Оплатить ${cartSum().toLocaleString('ru-RU')} ₽`;
+    btn.onclick = openInvoice;
+    document.body.appendChild(btn);
+  }
+}
+
+function setTab(t) { tab = t; render(); }
+
+function setPlatform(gameId, platform) { selection[gameId].platform = platform; render(); }
+function setEdition(gameId, edition) { selection[gameId].edition = edition; render(); }
+
+function addToCart(gameId) {
+  const sel = selection[gameId];
+  const key = `${gameId}__${sel.platform}__${sel.edition}`;
+  if (cart[key]) cart[key].qty++;
+  else cart[key] = { gameId, platform: sel.platform, edition: sel.edition, qty: 1 };
+  render();
+  tg?.HapticFeedback?.impactOccurred("light");
+}
+function changeQty(key, d) {
+  cart[key].qty += d;
+  if (cart[key].qty <= 0) delete cart[key];
+  render();
+}
+
+function openInvoice() {
+  const bg = document.getElementById("sheetBg");
+  const content = document.getElementById("sheetContent");
+  const items = Object.values(cart).map(c => {
+    const g = GAMES.find(x=>x.id===c.gameId);
+    return `${g.name} (${c.platform}, ${c.edition.replace(' Edition','')}) ×${c.qty}`;
+  }).join(", ");
+  content.innerHTML = `
+    <h3>Оплата VICE SHOP</h3>
+    <p>Telegram Payments · счёт создан ботом</p>
+    <div class="line"><span>Товары</span><span>${items}</span></div>
+    <div class="line"><span>К оплате</span><span><b style="color:#fff">${cartSum().toLocaleString('ru-RU')} ₽</b></span></div>
+    <button class="paybtn" onclick="paySuccess()">Оплатить</button>
+    <button class="cancelbtn" onclick="closeSheet()">Отмена</button>
+  `;
+  bg.classList.add("show");
+}
+function closeSheet() { document.getElementById("sheetBg").classList.remove("show"); }
+
+function paySuccess() {
+  const content = document.getElementById("sheetContent");
+  content.innerHTML = `
+    <div class="success">
+      <div class="check">✓</div>
+      <h3>Оплачено</h3>
+      <p>Бот пришлёт ключи в этот чат через пару секунд</p>
+    </div>
+  `;
+  const num = "#VS-" + (1043 + orders.length);
+  const items = Object.values(cart).map(c => {
+    const g = GAMES.find(x=>x.id===c.gameId);
+    return `${g.name} (${c.platform}, ${c.edition.replace(' Edition','')})${c.qty>1?` ×${c.qty}`:''}`;
+  }).join(", ");
+  orders.unshift({ num, items, total: cartSum(), status: "Оплачен" });
+  setTimeout(() => {
+    cart = {};
+    closeSheet();
+    setTab("orders");
+  }, 1400);
+}
+
+render();
+</script>
+</body>
+</html>

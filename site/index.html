@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Portfolio — 17 live demos</title>
+<title>Portfolio — 18 live demos</title>
 <style>
   :root {
     --bg: #0b0d10; --card: #14171c; --text: #f2f3f5; --muted: #9aa2ad;
@@ -46,12 +46,14 @@
 <body>
 <header>
   <h1>Portfolio</h1>
-  <p>17 products, live and clickable — 14 storefronts &amp; 3 SaaS platforms. Source code is private; these are the built, view-only demo builds.</p>
+  <p>18 products, live and clickable — 14 storefronts, 3 SaaS platforms &amp; 1 service business-card site. Source code is private; these are the built, view-only demo builds.</p>
 </header>
 <h2 class="section">SaaS / B2B platforms</h2>
 <div class="grid" id="grid-saas"></div>
 <h2 class="section">Storefronts</h2>
 <div class="grid" id="grid-storefronts"></div>
+<h2 class="section">Service business-card sites</h2>
+<div class="grid" id="grid-services"></div>
 <footer>Live demos generated as static builds for portfolio review.</footer>
 <script>
 const saas = [
@@ -75,6 +77,9 @@ const storefronts = [
   {"slug":"roast-and-leaf","title":"Roast & Leaf","description":"Specialty coffee and tea subscription with a flavor-profile quiz","thumb":"roast-and-leaf/thumb.png"},
   {"slug":"soundstage","title":"SoundStage","description":"Musical instrument marketplace with a home-trial period and skill-level recommendations","thumb":"soundstage/thumb.png"}
 ];
+const services = [
+  {"slug":"kranservice","title":"КранСервис","description":"Одностраничный сайт-визитка услуг манипулятора (Гомель) — договорные цены, скрытая админ-панель для редактирования текста, цен, фото и контактов","thumb":"kranservice/thumb.png"}
+];
 function render(list, elId) {
   const grid = document.getElementById(elId);
   for (const p of list) {
@@ -94,6 +99,7 @@ function render(list, elId) {
 }
 render(saas, 'grid-saas');
 render(storefronts, 'grid-storefronts');
+render(services, 'grid-services');
 </script>
 </body>
 </html>

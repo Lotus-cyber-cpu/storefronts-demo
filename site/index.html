@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Portfolio — 19 live demos</title>
+<title>Portfolio — 20 live demos</title>
 <style>
   :root {
     --bg: #0b0d10; --card: #14171c; --text: #f2f3f5; --muted: #9aa2ad;
@@ -20,7 +20,8 @@
   h2.section { max-width: 1200px; margin: 8px auto 4px; padding: 0 24px; font-size: 14px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
   .grid {
     display: grid; gap: 20px; max-width: 1200px; margin: 0 auto; padding: 12px 24px 48px;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 320px));
+    justify-content: center;
   }
   .card {
     background: var(--card); border: 1px solid var(--border); border-radius: 14px;
@@ -46,7 +47,7 @@
 <body>
 <header>
   <h1>Portfolio</h1>
-  <p>19 products, live and clickable — 14 storefronts, 3 SaaS platforms, 1 service business-card site &amp; 1 Telegram Mini App. Source code is private; these are the built, view-only demo builds.</p>
+  <p>20 products, live and clickable — 14 storefronts, 4 SaaS platforms, 1 service business-card site &amp; 1 Telegram Mini App. Source code is private; these are the built, view-only demo builds.</p>
 </header>
 <h2 class="section">SaaS / B2B platforms</h2>
 <div class="grid" id="grid-saas"></div>
@@ -61,7 +62,8 @@
 const saas = [
   {"slug":"roost","title":"Roost","description":"Operations platform for boutique hospitality — unifies bookings, guests, staff and revenue for hotels and short-term rental operators","thumb":"roost/thumb.png"},
   {"slug":"rostok","title":"Rostok","description":"AI-агенты для маркетплейсов — управляют карточками, отзывами, рекламой и юнит-экономикой на Wildberries и Ozon","thumb":"rostok/thumb.png"},
-  {"slug":"vela","title":"Vela","description":"Multi-currency crypto banking — a premium wallet and card platform to hold, swap and spend digital assets","thumb":"vela/thumb.png"}
+  {"slug":"vela","title":"Vela","description":"Multi-currency crypto banking — a premium wallet and card platform to hold, swap and spend digital assets","thumb":"vela/thumb.png"},
+  {"slug":"folio-demo","title":"Folio","description":"AI lead-magnet builder — turns a voice note, draft or idea into a structured, on-brand PDF guide/checklist through a chat-driven workflow","thumb":"folio-demo/thumb.png"}
 ];
 const storefronts = [
   {"slug":"pawscout-petshop","title":"PawsCout Petshop","description":"Pet supplies e-commerce with pet profiles and food subscriptions","thumb":"pawscout-petshop/thumb.png"},

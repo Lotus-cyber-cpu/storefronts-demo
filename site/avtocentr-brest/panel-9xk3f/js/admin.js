@@ -125,19 +125,27 @@
   }
 
   function renderTopbar(title, sub) {
-    const role = getRole();
     return `
     <div class="admin-topbar">
       <div>
         <h1>${title}</h1>
         ${sub ? `<p>${sub}</p>` : ''}
       </div>
-      <div class="role-switch">
-        <label>Роль (демо)</label>
-        <select id="role-select">
-          ${Object.entries(ROLES).map(([k, v]) => `<option value="${k}" ${k === role ? 'selected' : ''}>${v.label}</option>`).join('')}
-        </select>
+    </div>`;
+  }
+
+  function renderRoleBar() {
+    const role = getRole();
+    return `
+    <div class="role-bar">
+      <div class="role-bar-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>
+        Смотрю панель как:
       </div>
+      <select id="role-select">
+        ${Object.entries(ROLES).map(([k, v]) => `<option value="${k}" ${k === role ? 'selected' : ''}>${v.label}</option>`).join('')}
+      </select>
+      <span class="role-bar-hint">переключите, чтобы увидеть панель глазами другой роли</span>
     </div>`;
   }
 
@@ -155,7 +163,7 @@
     const shell = document.getElementById('admin-shell');
     shell.innerHTML = `${renderSidebar(activeKey)}<main class="admin-main" id="admin-main"></main>`;
     document.getElementById('admin-main').innerHTML =
-      `<div class="demo-notice-admin"></div>${renderTopbar(title, sub)}<div id="admin-content"></div>`;
+      `${renderRoleBar()}${renderTopbar(title, sub)}<div id="admin-content"></div>`;
     bindRoleSwitch();
 
     const role = getRole();

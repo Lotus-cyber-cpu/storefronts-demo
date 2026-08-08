@@ -12,6 +12,7 @@
   const NAV_ITEMS = [
     { href: 'catalog.html', label: 'Каталог' },
     { href: 'leasing.html', label: 'Лизинг' },
+    { href: 'calculator.html', label: 'Калькулятор' },
     { href: 'order-abroad.html', label: 'Под заказ' },
     { href: 'trade-in.html', label: 'Оценка авто' },
     { href: 'contacts.html', label: 'Контакты' },
@@ -69,6 +70,7 @@
             <ul>
               <li><a href="catalog.html">Каталог</a></li>
               <li><a href="leasing.html">Лизинг</a></li>
+              <li><a href="calculator.html">Калькулятор</a></li>
               <li><a href="order-abroad.html">Заказ из-за рубежа</a></li>
               <li><a href="trade-in.html">Trade-in / оценка</a></li>
             </ul>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор лизинга — АвтоЦентр Брест</title>
+<meta name="description" content="Посчитайте ежемесячный платёж по лизингу автомобиля — цена, первый взнос, срок.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="crumbs" style="text-align:left"><a href="index.html">Главная</a> / Калькулятор</div>
+    <span class="eyebrow">Калькулятор</span>
+    <h1 class="font-serif">Посчитайте платёж за минуту</h1>
+    <p>Выберите машину из каталога или просто подвиньте ползунки — платёж пересчитывается сразу.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container" style="max-width:760px">
+    <div class="field" style="margin-bottom:24px">
+      <label style="display:block;font-weight:700;margin-bottom:8px">Машина (необязательно)</label>
+      <select id="calc-car-select" style="width:100%">
+        <option value="">Своя сумма — двигайте ползунок ниже</option>
+      </select>
+    </div>
+    <div class="calc-widget" data-calc data-price="45000"></div>
+    <div class="hero-actions" style="justify-content:center;margin-top:28px">
+      <a href="leasing.html" class="btn btn-primary btn-lg">Оставить заявку на лизинг</a>
+      <a href="catalog.html" class="btn btn-outline btn-lg">Смотреть каталог</a>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<div id="contact-bar-root"></div>
+<div id="palette-switcher-root"></div>
+<div id="drawer-root"></div>
+
+<script src="js/cars-data.js"></script>
+<script src="js/partials.js"></script>
+<script src="js/main.js"></script>
+<script>
+  ACB.mountLayout('calculator.html');
+
+  const sel = document.getElementById('calc-car-select');
+  ACB.CARS.forEach(c => sel.insertAdjacentHTML('beforeend', `<option value="${c.price}">${c.title}, ${c.year} — ${ACB.formatPrice(c.price)}</option>`));
+  sel.addEventListener('change', () => {
+    if (!sel.value) return;
+    const priceInput = document.querySelector('[data-calc] [data-inp="price"]');
+    if (priceInput) {
+      priceInput.value = sel.value;
+      priceInput.dispatchEvent(new Event('input'));
+    }
+  });
+</script>
+</body>
+</html>

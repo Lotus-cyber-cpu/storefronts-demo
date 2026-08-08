@@ -7,28 +7,26 @@
 
 (function (global) {
   const CAR_SILHOUETTE = `
-    <g fill="none" stroke="rgba(255,255,255,.5)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M60 210 C 95 150 150 118 205 118 C 262 118 312 144 358 196"/>
-      <path d="M358 196 C 392 200 415 212 432 230"/>
-      <path d="M30 244 C 55 230 82 218 60 210"/>
-      <path d="M18 268 C 18 244 26 232 38 224 L 432 230 C 452 232 464 246 466 264 L 466 268"/>
-      <path d="M18 268 L 466 268"/>
-      <ellipse cx="410" cy="244" rx="22" ry="11"/>
+    <g fill="rgba(255,255,255,.94)">
+      <path d="M50 210 L50 175 Q50 158 66 152 L128 138 Q158 90 212 78 L308 78 Q356 82 380 130 L432 148 Q460 152 468 178 L468 210 Z"/>
+      <path d="M128 138 L155 100 Q163 90 176 90 L296 90 Q312 90 322 104 L352 138 Z" fill="rgba(20,25,45,.82)"/>
+      <rect x="236" y="90" width="8" height="48" fill="rgba(255,255,255,.94)"/>
     </g>
-    <g fill="rgba(0,0,0,.35)">
-      <circle cx="118" cy="292" r="38"/>
-      <circle cx="380" cy="292" r="38"/>
+    <g fill="rgba(20,25,45,.5)">
+      <rect x="58" y="188" width="26" height="16" rx="5"/>
+      <rect x="424" y="182" width="30" height="18" rx="5"/>
     </g>
-    <g fill="rgba(255,255,255,.55)">
-      <circle cx="118" cy="292" r="15"/>
-      <circle cx="380" cy="292" r="15"/>
+    <g>
+      <circle cx="140" cy="216" r="42" fill="rgba(20,25,45,.65)"/>
+      <circle cx="140" cy="216" r="19" fill="rgba(255,255,255,.92)"/>
+      <circle cx="378" cy="216" r="42" fill="rgba(20,25,45,.65)"/>
+      <circle cx="378" cy="216" r="19" fill="rgba(255,255,255,.92)"/>
     </g>`;
 
   function svgPlaceholder({ hueA, hueB, label, w = 800, h = 600, icon = 'car' }) {
-    const bg = `linear-gradient(135deg, hsl(${hueA} 38% 22%), hsl(${hueB} 45% 14%))`;
-    let inner = '';
+    let inner = '', nativeW = 480, nativeH = 340, fraction = 0.5;
     if (icon === 'car') {
-      inner = `<svg viewBox="0 0 480 340" width="70%" x="15%" y="18%">${CAR_SILHOUETTE}</svg>`;
+      inner = CAR_SILHOUETTE; nativeW = 520; nativeH = 260; fraction = 0.82;
     } else if (icon === 'wheel') {
       inner = `<circle cx="240" cy="170" r="90" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="10"/>
                 <circle cx="240" cy="170" r="34" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="8"/>
@@ -60,6 +58,10 @@
                   <circle cx="300" cy="195" r="16"/>
                 </g>`;
     }
+    const scale = (w * fraction) / nativeW;
+    const tx = (w - nativeW * scale) / 2;
+    const ty = (h - nativeH * scale) / 2;
+    const showLabel = label && icon !== 'car';
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
       <defs>
         <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
@@ -68,8 +70,8 @@
         </linearGradient>
       </defs>
       <rect width="${w}" height="${h}" fill="url(#g)"/>
-      <g transform="translate(${w * 0.5 - 240},${h * 0.5 - 170})">${inner}</g>
-      ${label ? `<text x="24" y="${h - 22}" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="700" fill="rgba(255,255,255,.55)">${label}</text>` : ''}
+      <g transform="translate(${tx},${ty}) scale(${scale})">${inner}</g>
+      ${showLabel ? `<text x="24" y="${h - 22}" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="700" fill="rgba(255,255,255,.6)">${label}</text>` : ''}
     </svg>`;
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
   }

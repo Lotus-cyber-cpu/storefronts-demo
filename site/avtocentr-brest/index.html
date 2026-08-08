@@ -37,7 +37,13 @@
     </div>
     <div class="hero-picker">
       <div class="picker-preview">
+        <button type="button" class="picker-arrow picker-arrow-prev" data-picker-prev aria-label="Предыдущий автомобиль">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
         <img data-picker-preview-img alt="Выбранный автомобиль">
+        <button type="button" class="picker-arrow picker-arrow-next" data-picker-next aria-label="Следующий автомобиль">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
         <div class="picker-preview-info">
           <div class="ppi-title" data-picker-preview-title></div>
           <div class="badge-row">
@@ -47,8 +53,11 @@
           </div>
         </div>
       </div>
-      <div class="picker-hint">Выберите один из 10 автомобилей:</div>
-      <div class="picker-grid" data-picker-grid></div>
+      <div class="picker-hint">
+        <span>Пролистайте — 10 автомобилей на выбор</span>
+        <span data-picker-counter>1 / 10</span>
+      </div>
+      <div class="picker-dots" data-picker-dots></div>
     </div>
   </div>
 </section>
@@ -133,36 +142,42 @@
   ACB.mountLayout('');
 
   const pickerCars = ACB.CARS.slice(0, 10);
-  const pickerGrid = document.querySelector('[data-picker-grid]');
+  const dotsEl = document.querySelector('[data-picker-dots]');
+  const counterEl = document.querySelector('[data-picker-counter]');
   const previewImg = document.querySelector('[data-picker-preview-img]');
   const previewTitle = document.querySelector('[data-picker-preview-title]');
   const captionEl = document.querySelector('[data-picker-caption]');
   const priceEl = document.querySelector('[data-picker-price]');
   const leaseEl = document.querySelector('[data-picker-lease]');
 
-  function selectCar(car, tileEl) {
+  dotsEl.innerHTML = pickerCars.map((c, i) => `<button type="button" class="pdot" data-i="${i}" aria-label="${c.title}"></button>`).join('');
+  const dots = dotsEl.querySelectorAll('.pdot');
+
+  let currentIndex = Math.max(0, pickerCars.findIndex(c => c.status === 'instock'));
+
+  function renderCurrent() {
+    const car = pickerCars[currentIndex];
     previewImg.src = car.img;
     previewImg.alt = car.title;
     previewTitle.textContent = `${car.title}, ${car.year}`;
     captionEl.textContent = `Например, ${car.title} ${car.year}`;
     priceEl.textContent = ACB.formatPrice(car.price);
     leaseEl.textContent = ACB.formatPrice(car.leaseFrom) + ' / мес.';
-    pickerGrid.querySelectorAll('.picker-tile').forEach(t => t.classList.remove('active'));
-    if (tileEl) tileEl.classList.add('active');
+    counterEl.textContent = `${currentIndex + 1} / ${pickerCars.length}`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
   }
 
-  pickerGrid.innerHTML = pickerCars.map((c, i) => `
-    <button type="button" class="picker-tile" data-i="${i}" aria-label="${c.title}, ${ACB.formatPrice(c.price)}">
-      <img src="${c.img}" alt="${c.title}">
-      <span class="pt-label">${c.brand}</span>
-    </button>`).join('');
-
-  pickerGrid.querySelectorAll('.picker-tile').forEach((tile, i) => {
-    tile.addEventListener('click', () => selectCar(pickerCars[i], tile));
+  document.querySelector('[data-picker-prev]').addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + pickerCars.length) % pickerCars.length;
+    renderCurrent();
   });
+  document.querySelector('[data-picker-next]').addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % pickerCars.length;
+    renderCurrent();
+  });
+  dots.forEach((dot, i) => dot.addEventListener('click', () => { currentIndex = i; renderCurrent(); }));
 
-  const initialCar = pickerCars.find(c => c.status === 'instock') || pickerCars[0];
-  selectCar(initialCar, pickerGrid.children[pickerCars.indexOf(initialCar)]);
+  renderCurrent();
 
   const REVIEWS = [
     { name: 'Виктор Ш.', text: 'Взял Octavia в лизинг, платёж посчитали за 2 минуты прямо на сайте. Оформили быстро, без беготни по банкам.', initials: 'ВШ' },

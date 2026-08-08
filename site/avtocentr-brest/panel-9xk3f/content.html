@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Контент сайта — админ-панель АвтоЦентр Брест</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-shell" id="admin-shell"></div>
+
+<script src="../js/cars-data.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  if (ACBAdmin.mount('content', 'Контент сайта', 'Баннеры, «горячие предложения» и тексты страниц — без правки кода')) {
+    const content = ACBAdmin.get('content') && Object.keys(ACBAdmin.get('content')).length
+      ? JSON.parse(localStorage.getItem(ACBAdmin.LS.content)) : {};
+
+    document.getElementById('admin-content').innerHTML = `
+      <div class="panel-card">
+        <h2>Главная страница</h2>
+        <div class="a-field"><label>Баннер «Привезём под заказ»</label><textarea id="c-homeBanner" rows="2">${content.homeBanner || ''}</textarea></div>
+        <div class="a-field"><label>Горячее предложение</label><textarea id="c-hotOffer" rows="2">${content.hotOffer || ''}</textarea></div>
+      </div>
+      <div class="panel-card">
+        <h2>Тексты страниц</h2>
+        <div class="a-field"><label>О салоне</label><textarea id="c-aboutText" rows="3">${content.aboutText || ''}</textarea></div>
+        <div class="a-field"><label>Лизинг</label><textarea id="c-leasingText" rows="3">${content.leasingText || ''}</textarea></div>
+        <div class="a-field"><label>Заказ из-за рубежа</label><textarea id="c-orderAbroadText" rows="3">${content.orderAbroadText || ''}</textarea></div>
+        <div class="a-field"><label>Гарантия</label><textarea id="c-warrantyText" rows="3">${content.warrantyText || ''}</textarea></div>
+      </div>
+      <button class="a-btn a-btn-primary" id="save-content">Сохранить изменения</button>
+      <p class="hint">В демо-версии изменения сохраняются локально и не отражаются на страницах сайта — в production-модуле эти поля будут напрямую управлять текстами публичных страниц.</p>`;
+
+    document.getElementById('save-content').addEventListener('click', () => {
+      const updated = {
+        homeBanner: document.getElementById('c-homeBanner').value,
+        hotOffer: document.getElementById('c-hotOffer').value,
+        aboutText: document.getElementById('c-aboutText').value,
+        leasingText: document.getElementById('c-leasingText').value,
+        orderAbroadText: document.getElementById('c-orderAbroadText').value,
+        warrantyText: document.getElementById('c-warrantyText').value,
+      };
+      ACBAdmin.set('content', updated);
+      ACBAdmin.toast('Контент сохранён');
+    });
+  }
+</script>
+</body>
+</html>

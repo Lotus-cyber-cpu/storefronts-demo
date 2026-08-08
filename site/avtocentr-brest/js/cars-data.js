@@ -1,0 +1,133 @@
+/* ==========================================================================
+   АвтоЦентр Брест — демо-данные автомобилей
+   Реальные фото и цены — открытый вопрос к клиенту (см. ТЗ §9).
+   До получения материалов каталог наполнен плейсхолдерами, сгенерированными
+   на лету (SVG), чтобы витрина выглядела живой уже на этапе согласования.
+   ========================================================================== */
+
+(function (global) {
+  const CAR_SILHOUETTE = `
+    <g fill="none" stroke="rgba(255,255,255,.5)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M60 210 C 95 150 150 118 205 118 C 262 118 312 144 358 196"/>
+      <path d="M358 196 C 392 200 415 212 432 230"/>
+      <path d="M30 244 C 55 230 82 218 60 210"/>
+      <path d="M18 268 C 18 244 26 232 38 224 L 432 230 C 452 232 464 246 466 264 L 466 268"/>
+      <path d="M18 268 L 466 268"/>
+      <ellipse cx="410" cy="244" rx="22" ry="11"/>
+    </g>
+    <g fill="rgba(0,0,0,.35)">
+      <circle cx="118" cy="292" r="38"/>
+      <circle cx="380" cy="292" r="38"/>
+    </g>
+    <g fill="rgba(255,255,255,.55)">
+      <circle cx="118" cy="292" r="15"/>
+      <circle cx="380" cy="292" r="15"/>
+    </g>`;
+
+  function svgPlaceholder({ hueA, hueB, label, w = 800, h = 600, icon = 'car' }) {
+    const bg = `linear-gradient(135deg, hsl(${hueA} 38% 22%), hsl(${hueB} 45% 14%))`;
+    let inner = '';
+    if (icon === 'car') {
+      inner = `<svg viewBox="0 0 480 340" width="70%" x="15%" y="18%">${CAR_SILHOUETTE}</svg>`;
+    } else if (icon === 'wheel') {
+      inner = `<circle cx="240" cy="170" r="90" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="10"/>
+                <circle cx="240" cy="170" r="34" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="8"/>
+                <g stroke="rgba(255,255,255,.5)" stroke-width="6">
+                  <line x1="240" y1="90" x2="240" y2="130"/><line x1="240" y1="210" x2="240" y2="250"/>
+                  <line x1="160" y1="170" x2="200" y2="170"/><line x1="280" y1="170" x2="320" y2="170"/>
+                  <line x1="183" y1="113" x2="211" y2="141"/><line x1="269" y1="199" x2="297" y2="227"/>
+                  <line x1="297" y1="113" x2="269" y2="141"/><line x1="211" y1="199" x2="183" y2="227"/>
+                </g>`;
+    } else if (icon === 'seat') {
+      inner = `<g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M170 260 L170 150 C170 120 190 100 225 100 L 255 100 C 290 100 310 120 310 150 L 310 260"/>
+                  <path d="M170 260 L 150 260 L150 300 L 330 300 L330 260 L 310 260"/>
+                  <path d="M195 150 L 285 150"/>
+                </g>`;
+    } else if (icon === 'dash') {
+      inner = `<g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="190" cy="180" r="46"/><circle cx="310" cy="180" r="46"/>
+                  <path d="M120 230 C 120 150 360 150 360 230"/>
+                  <circle cx="190" cy="180" r="8" fill="rgba(255,255,255,.55)"/>
+                  <circle cx="310" cy="180" r="8" fill="rgba(255,255,255,.55)"/>
+                </g>`;
+    } else if (icon === 'engine') {
+      inner = `<g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="150" y="140" width="180" height="110" rx="12"/>
+                  <path d="M150 170 L120 170 L120 220 L150 220"/>
+                  <path d="M180 140 L180 110 L220 110 L220 140"/>
+                  <path d="M250 140 L250 110 L290 110 L290 140"/>
+                  <circle cx="300" cy="195" r="16"/>
+                </g>`;
+    }
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="hsl(${hueA} 38% 24%)"/>
+          <stop offset="1" stop-color="hsl(${hueB} 45% 12%)"/>
+        </linearGradient>
+      </defs>
+      <rect width="${w}" height="${h}" fill="url(#g)"/>
+      <g transform="translate(${w * 0.5 - 240},${h * 0.5 - 170})">${inner}</g>
+      ${label ? `<text x="24" y="${h - 22}" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="700" fill="rgba(255,255,255,.55)">${label}</text>` : ''}
+    </svg>`;
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+  }
+
+  const HOTSPOTS = [
+    { key: 'wheel', label: 'Колесо и диски', x: 20, y: 78, icon: 'wheel' },
+    { key: 'salon', label: 'Салон', x: 46, y: 30, icon: 'seat' },
+    { key: 'dash', label: 'Панель приборов', x: 65, y: 40, icon: 'dash' },
+    { key: 'engine', label: 'Двигатель', x: 85, y: 55, icon: 'engine' },
+  ];
+
+  const CARS = [
+    { id: 'toyota-camry-2020', brand: 'Toyota', model: 'Camry', year: 2020, price: 54900, mileage: 61000, country: 'Германия', fuel: 'Бензин', trans: 'Автомат', engine: '2.5 л, 181 л.с.', drive: 'Передний', color: 'Чёрный', vin: true, warranty: true, report: true, status: 'instock', hue: [206, 230] },
+    { id: 'volkswagen-passat-2019', brand: 'Volkswagen', model: 'Passat B8', year: 2019, price: 41500, mileage: 88000, country: 'Литва', fuel: 'Дизель', trans: 'Автомат', engine: '2.0 л, 150 л.с.', drive: 'Передний', color: 'Серый', vin: true, warranty: true, report: true, status: 'instock', hue: [14, 40] },
+    { id: 'skoda-octavia-2021', brand: 'Skoda', model: 'Octavia', year: 2021, price: 38900, mileage: 34000, country: 'Беларусь (в наличии)', fuel: 'Бензин', trans: 'Механика', engine: '1.4 л, 150 л.с.', drive: 'Передний', color: 'Белый', vin: true, warranty: true, report: true, status: 'instock', hue: [150, 190] },
+    { id: 'bmw-520d-2018', brand: 'BMW', model: '520d', year: 2018, price: 49900, mileage: 102000, country: 'Германия', fuel: 'Дизель', trans: 'Автомат', engine: '2.0 л, 190 л.с.', drive: 'Задний', color: 'Синий', vin: true, warranty: true, report: true, status: 'reserved', hue: [230, 260] },
+    { id: 'kia-sportage-2022', brand: 'Kia', model: 'Sportage', year: 2022, price: 62900, mileage: 21000, country: 'Польша', fuel: 'Бензин', trans: 'Автомат', engine: '1.6 л, 150 л.с.', drive: 'Полный', color: 'Красный', vin: true, warranty: true, report: true, status: 'instock', hue: [356, 20] },
+    { id: 'hyundai-tucson-2020', brand: 'Hyundai', model: 'Tucson', year: 2020, price: 46900, mileage: 57000, country: 'Литва', fuel: 'Дизель', trans: 'Автомат', engine: '2.0 л, 185 л.с.', drive: 'Полный', color: 'Серебристый', vin: true, warranty: true, report: true, status: 'order', hue: [200, 220] },
+    { id: 'mercedes-e200-2017', brand: 'Mercedes-Benz', model: 'E200', year: 2017, price: 47500, mileage: 121000, country: 'Германия', fuel: 'Бензин', trans: 'Автомат', engine: '2.0 л, 184 л.с.', drive: 'Задний', color: 'Чёрный', vin: true, warranty: true, report: true, status: 'instock', hue: [222, 250] },
+    { id: 'renault-koleos-2019', brand: 'Renault', model: 'Koleos', year: 2019, price: 36900, mileage: 74000, country: 'Польша', fuel: 'Дизель', trans: 'Вариатор', engine: '2.0 л, 177 л.с.', drive: 'Полный', color: 'Коричневый', vin: true, warranty: true, report: true, status: 'instock', hue: [28, 50] },
+    { id: 'nissan-qashqai-2021', brand: 'Nissan', model: 'Qashqai', year: 2021, price: 43900, mileage: 39000, country: 'Беларусь (в наличии)', fuel: 'Бензин', trans: 'Вариатор', engine: '1.3 л, 140 л.с.', drive: 'Передний', color: 'Белый', vin: true, warranty: true, report: true, status: 'sold', hue: [190, 210] },
+  ];
+
+  CARS.forEach(c => {
+    c.title = `${c.brand} ${c.model}`;
+    c.img = svgPlaceholder({ hueA: c.hue[0], hueB: c.hue[1], label: `${c.brand} ${c.model}`, icon: 'car' });
+    c.thumbSmall = c.img;
+    c.hotspotPhotos = HOTSPOTS.map(h => ({
+      ...h,
+      img: svgPlaceholder({ hueA: c.hue[0], hueB: c.hue[1], label: h.label, icon: h.icon, w: 480, h: 360 }),
+    }));
+    c.leaseFrom = Math.round((c.price * 0.85) / 60 / 5) * 5; // грубая оценка платежа для карточки
+  });
+
+  const STATUS_LABEL = {
+    instock: 'В наличии',
+    order: 'Под заказ',
+    reserved: 'Резерв',
+    sold: 'Продан',
+  };
+
+  function formatPrice(n) {
+    return n.toLocaleString('ru-RU').replace(/,/g, ' ') + ' р.';
+  }
+
+  function calcLeasePayment(price, downPct, months, ratePct) {
+    const down = price * (downPct / 100);
+    const principal = price - down;
+    const monthlyRate = (ratePct / 100) / 12;
+    if (monthlyRate === 0) return principal / months;
+    const payment = principal * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
+    return payment;
+  }
+
+  global.ACB = global.ACB || {};
+  global.ACB.CARS = CARS;
+  global.ACB.STATUS_LABEL = STATUS_LABEL;
+  global.ACB.formatPrice = formatPrice;
+  global.ACB.calcLeasePayment = calcLeasePayment;
+  global.ACB.svgPlaceholder = svgPlaceholder;
+})(window);

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Автомобили — админ-панель АвтоЦентр Брест</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-shell" id="admin-shell"></div>
+
+<div class="modal-backdrop" id="car-modal-backdrop">
+  <div class="modal">
+    <h2 id="car-modal-title">Добавить автомобиль</h2>
+    <form id="car-form">
+      <input type="hidden" id="car-id">
+      <div class="a-grid-2">
+        <div class="a-field"><label>Марка</label><input id="car-brand" required></div>
+        <div class="a-field"><label>Модель</label><input id="car-model" required></div>
+      </div>
+      <div class="a-grid-2">
+        <div class="a-field"><label>Год выпуска</label><input id="car-year" type="number" required></div>
+        <div class="a-field"><label>Пробег, км</label><input id="car-mileage" type="number" required></div>
+      </div>
+      <div class="a-grid-2">
+        <div class="a-field"><label>Цена, р.</label><input id="car-price" type="number" required></div>
+        <div class="a-field"><label>Страна поставки</label><input id="car-country" required></div>
+      </div>
+      <div class="a-grid-2">
+        <div class="a-field">
+          <label>Статус</label>
+          <select id="car-status">
+            <option value="instock">В наличии</option>
+            <option value="order">Под заказ</option>
+            <option value="reserved">Резерв</option>
+            <option value="sold">Продан</option>
+          </select>
+        </div>
+        <div class="a-field">
+          <label>PDF-отчёт проверки</label>
+          <select id="car-report">
+            <option value="1">Загружен</option>
+            <option value="0">Не загружен</option>
+          </select>
+        </div>
+      </div>
+      <p class="hint">Фото и детальные фото для наведения (§3.1 ТЗ) загружаются отдельным шагом после создания карточки — в демо используется автоплейсхолдер.</p>
+      <div class="modal-actions">
+        <button type="button" class="a-btn a-btn-outline" id="car-cancel">Отмена</button>
+        <button type="submit" class="a-btn a-btn-primary">Сохранить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="../js/cars-data.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  if (ACBAdmin.mount('cars', 'Автомобили', 'Карточки автомобилей: фото, характеристики, цена, статус, PDF-отчёт')) {
+    const statusMap = { instock: 'В наличии', order: 'Под заказ', reserved: 'Резерв', sold: 'Продан' };
+    const backdrop = document.getElementById('car-modal-backdrop');
+
+    function render() {
+      const cars = ACBAdmin.get('cars');
+      document.getElementById('admin-content').innerHTML = `
+        <div class="panel-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <h2 style="margin:0">Все автомобили (${cars.length})</h2>
+            <button class="a-btn a-btn-primary" id="add-car-btn">+ Добавить автомобиль</button>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Фото</th><th>Автомобиль</th><th>Год</th><th>Пробег</th><th>Цена</th><th>Страна</th><th>Статус</th><th>Отчёт</th><th></th></tr></thead>
+              <tbody>
+                ${cars.map(c => `
+                  <tr>
+                    <td><div class="cell-img"><img src="${c.img}" alt=""></div></td>
+                    <td><strong>${c.title}</strong></td>
+                    <td>${c.year}</td>
+                    <td>${c.mileage.toLocaleString('ru-RU')} км</td>
+                    <td>${ACB.formatPrice(c.price)}</td>
+                    <td>${c.country}</td>
+                    <td>
+                      <select class="badge-select" data-status-for="${c.id}">
+                        ${Object.entries(statusMap).map(([k, v]) => `<option value="${k}" ${k === c.status ? 'selected' : ''}>${v}</option>`).join('')}
+                      </select>
+                    </td>
+                    <td>${c.hasReport ? '<span class="pill pill-approved">Есть</span>' : '<span class="pill pill-declined">Нет</span>'}</td>
+                    <td>
+                      <div class="row-actions">
+                        <button class="icon-sm-btn" data-edit="${c.id}" title="Редактировать"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20h4l11-11-4-4L4 16v4z"/></svg></button>
+                        <button class="icon-sm-btn" data-del="${c.id}" title="Удалить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg></button>
+                      </div>
+                    </td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+
+      document.querySelectorAll('[data-status-for]').forEach(sel => sel.addEventListener('change', () => {
+        const list = ACBAdmin.get('cars');
+        const item = list.find(c => c.id === sel.dataset.statusFor);
+        item.status = sel.value;
+        ACBAdmin.set('cars', list);
+        ACBAdmin.toast('Статус обновлён: ' + statusMap[sel.value]);
+      }));
+      document.querySelectorAll('[data-edit]').forEach(btn => btn.addEventListener('click', () => openModal(btn.dataset.edit)));
+      document.querySelectorAll('[data-del]').forEach(btn => btn.addEventListener('click', () => {
+        if (!confirm('Удалить эту карточку автомобиля?')) return;
+        const list = ACBAdmin.get('cars').filter(c => c.id !== btn.dataset.del);
+        ACBAdmin.set('cars', list);
+        ACBAdmin.toast('Автомобиль удалён');
+        render();
+      }));
+      document.getElementById('add-car-btn').addEventListener('click', () => openModal(null));
+    }
+
+    function openModal(id) {
+      const list = ACBAdmin.get('cars');
+      const car = list.find(c => c.id === id);
+      document.getElementById('car-modal-title').textContent = car ? 'Редактировать автомобиль' : 'Добавить автомобиль';
+      document.getElementById('car-id').value = id || '';
+      document.getElementById('car-brand').value = car ? car.brand : '';
+      document.getElementById('car-model').value = car ? car.model : '';
+      document.getElementById('car-year').value = car ? car.year : new Date().getFullYear();
+      document.getElementById('car-mileage').value = car ? car.mileage : 0;
+      document.getElementById('car-price').value = car ? car.price : '';
+      document.getElementById('car-country').value = car ? car.country : '';
+      document.getElementById('car-status').value = car ? car.status : 'instock';
+      document.getElementById('car-report').value = car && car.hasReport ? '1' : '0';
+      backdrop.classList.add('open');
+    }
+    document.getElementById('car-cancel').addEventListener('click', () => backdrop.classList.remove('open'));
+    backdrop.addEventListener('click', (e) => { if (e.target === backdrop) backdrop.classList.remove('open'); });
+
+    document.getElementById('car-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const list = ACBAdmin.get('cars');
+      const id = document.getElementById('car-id').value;
+      const brand = document.getElementById('car-brand').value.trim();
+      const model = document.getElementById('car-model').value.trim();
+      const data = {
+        brand, model, title: brand + ' ' + model,
+        year: Number(document.getElementById('car-year').value),
+        mileage: Number(document.getElementById('car-mileage').value),
+        price: Number(document.getElementById('car-price').value),
+        country: document.getElementById('car-country').value.trim(),
+        status: document.getElementById('car-status').value,
+        hasReport: document.getElementById('car-report').value === '1',
+      };
+      if (id) {
+        const item = list.find(c => c.id === id);
+        Object.assign(item, data);
+        ACBAdmin.toast('Изменения сохранены');
+      } else {
+        data.id = 'car-' + Date.now();
+        data.img = ACB.svgPlaceholder({ hueA: 210, hueB: 230, label: data.title, icon: 'car' });
+        list.push(data);
+        ACBAdmin.toast('Автомобиль добавлен');
+      }
+      ACBAdmin.set('cars', list);
+      backdrop.classList.remove('open');
+      render();
+    });
+
+    render();
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Заявки — админ-панель АвтоЦентр Брест</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-shell" id="admin-shell"></div>
+
+<script src="../js/cars-data.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  if (ACBAdmin.mount('leads', 'Заявки', 'Все обращения с сайта в одном месте: лизинг, trade-in, заказ из-за рубежа, запись на просмотр')) {
+    const statusMap = { new: 'Новая', progress: 'В работе', closed: 'Закрыта' };
+    let filter = 'all';
+
+    function render() {
+      const all = ACBAdmin.get('leads');
+      const types = [...new Set(all.map(l => l.type))];
+      const list = filter === 'all' ? all : all.filter(l => l.status === filter);
+
+      document.getElementById('admin-content').innerHTML = `
+        <div class="panel-card">
+          <div class="tabs" id="lead-tabs">
+            <button class="tab-btn ${filter === 'all' ? 'active' : ''}" data-f="all">Все (${all.length})</button>
+            <button class="tab-btn ${filter === 'new' ? 'active' : ''}" data-f="new">Новые (${all.filter(l => l.status === 'new').length})</button>
+            <button class="tab-btn ${filter === 'progress' ? 'active' : ''}" data-f="progress">В работе (${all.filter(l => l.status === 'progress').length})</button>
+            <button class="tab-btn ${filter === 'closed' ? 'active' : ''}" data-f="closed">Закрытые (${all.filter(l => l.status === 'closed').length})</button>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Тип</th><th>Клиент</th><th>Тема</th><th>Дата</th><th>Статус</th></tr></thead>
+              <tbody>
+                ${list.map(l => `
+                  <tr>
+                    <td>${l.type}</td>
+                    <td><strong>${l.name}</strong><br><span style="color:var(--color-text-muted)">${l.phone}</span></td>
+                    <td>${l.subject}</td>
+                    <td>${l.date}</td>
+                    <td>
+                      <select class="badge-select" data-status-for="${l.id}">
+                        ${Object.entries(statusMap).map(([k, v]) => `<option value="${k}" ${k === l.status ? 'selected' : ''}>${v}</option>`).join('')}
+                      </select>
+                    </td>
+                  </tr>`).join('')}
+                ${list.length === 0 ? `<tr><td colspan="5" style="text-align:center;color:var(--color-text-muted);padding:30px">Заявок нет</td></tr>` : ''}
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+
+      document.querySelectorAll('#lead-tabs .tab-btn').forEach(b => b.addEventListener('click', () => { filter = b.dataset.f; render(); }));
+      document.querySelectorAll('[data-status-for]').forEach(sel => sel.addEventListener('change', () => {
+        const items = ACBAdmin.get('leads');
+        items.find(l => l.id === sel.dataset.statusFor).status = sel.value;
+        ACBAdmin.set('leads', items);
+        ACBAdmin.toast('Статус заявки обновлён');
+      }));
+    }
+    render();
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Лизинг автомобиля — АвтоЦентр Брест</title>
+<meta name="description" content="Как купить автомобиль в лизинг: калькулятор платежа, документы, заявка онлайн.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="crumbs" style="text-align:left"><a href="index.html">Главная</a> / Лизинг</div>
+    <span class="eyebrow">Лизинг</span>
+    <h1 class="font-serif">Купить машину в лизинг проще, чем кажется</h1>
+    <p>Первый взнос от 10%, платёж — фиксированный каждый месяц. Посчитайте сумму сами или оставьте заявку — оформим вместе.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Как это работает</span>
+      <h2>4 шага до своей машины</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <h3>Выбираете авто</h3>
+        <p>Из наличия или под заказ — с любой машиной каталога можно оформить лизинг.</p>
+      </div>
+      <div class="step">
+        <h3>Считаем платёж</h3>
+        <p>Калькулятор ниже покажет ежемесячную сумму по вашим параметрам за секунду.</p>
+      </div>
+      <div class="step">
+        <h3>Подаёте документы</h3>
+        <p>Список — справа. Поможем оформить заявку в лизинговую компанию.</p>
+      </div>
+      <div class="step">
+        <h3>Забираете машину</h3>
+        <p>После одобрения — оформление и выдача авто в нашем автосалоне.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container grid-2">
+    <div>
+      <div class="section-head" style="margin-bottom:16px">
+        <h2 style="font-size:var(--fs-xl)">Калькулятор платежа</h2>
+      </div>
+      <div class="calc-widget" data-calc data-price="45000"></div>
+    </div>
+    <div>
+      <div class="section-head" style="margin-bottom:16px">
+        <h2 style="font-size:var(--fs-xl)">Какие документы нужны</h2>
+      </div>
+      <div class="check-list" style="grid-template-columns:1fr">
+        <div class="check-item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><div>Паспорт гражданина РБ</div></div>
+        <div class="check-item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><div>Водительское удостоверение</div></div>
+        <div class="check-item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><div>Справка о доходах — по требованию лизинговой компании</div></div>
+        <div class="check-item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><div>Для ИП / юрлиц — дополнительный пакет документов, уточним при заявке</div></div>
+      </div>
+      <p class="form-note">Полный и актуальный список документов лизинговая компания подтверждает индивидуально по заявке.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head text-center mx-auto" style="max-width:600px;text-align:center">
+      <span class="eyebrow">Заявка</span>
+      <h2>Оставьте заявку на лизинг</h2>
+      <p>Перезвоним в течение рабочего дня и поможем оформить документы</p>
+    </div>
+    <form class="form-card" style="max-width:640px;margin:32px auto 0" data-demo-form="lease-success">
+      <div class="form-grid">
+        <div class="field"><label>Имя</label><input type="text" placeholder="Как к вам обращаться" required></div>
+        <div class="field"><label>Телефон</label><input type="tel" placeholder="+375 29 000-00-00" required></div>
+        <div class="field full"><label>Какой автомобиль интересует</label><input type="text" placeholder="Например, Skoda Octavia или «подберите варианты»"></div>
+        <div class="field full"><label>Комментарий</label><textarea placeholder="Желаемый первый взнос, срок, другие пожелания"></textarea></div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-top:20px">Отправить заявку</button>
+      <p class="form-note">Нажимая «Отправить», вы соглашаетесь на обработку персональных данных.</p>
+    </form>
+    <div class="form-success" id="lease-success" style="max-width:640px;margin:0 auto">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>
+      <h3 class="font-serif">Заявка принята</h3>
+      <p style="color:var(--color-text-muted)">Наш менеджер свяжется с вами для уточнения деталей и подбора условий лизинга.</p>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<div id="contact-bar-root"></div>
+<div id="palette-switcher-root"></div>
+<div id="drawer-root"></div>
+
+<script src="js/cars-data.js"></script>
+<script src="js/partials.js"></script>
+<script src="js/main.js"></script>
+<script>ACB.mountLayout('leasing.html');</script>
+</body>
+</html>

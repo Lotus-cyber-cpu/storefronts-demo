@@ -1,0 +1,134 @@
+/* ==========================================================================
+   Design tokens — АвтоЦентр Брест
+   4 palette variants selectable via [data-theme] on <html>.
+   Default (no attribute) = Вариант A — Navy & Gold.
+   ========================================================================== */
+
+:root {
+  /* brand constants — stay fixed across every palette (from the logo) */
+  --brand-navy: #12172a;
+  --brand-white: #ffffff;
+
+  /* type */
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* base sizing — large & legible for a 40+ audience */
+  --fs-base: 18px;
+  --fs-sm: 0.9rem;
+  --fs-md: 1.05rem;
+  --fs-lg: 1.3rem;
+  --fs-xl: 1.7rem;
+  --fs-2xl: 2.3rem;
+  --fs-3xl: 3rem;
+  --lh-body: 1.6;
+
+  /* spacing scale */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+  --sp-9: 96px;
+
+  /* shape */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* motion */
+  --ease: cubic-bezier(.4,0,.2,1);
+  --dur: .22s;
+
+  /* layout */
+  --container: 1240px;
+  --header-h: 84px;
+
+  /* semantic — component sizing shared by all palettes */
+  --tap-min: 52px;
+  --shadow-sm: 0 2px 10px rgba(0,0,0,.12);
+  --shadow-md: 0 10px 30px rgba(0,0,0,.18);
+  --shadow-lg: 0 24px 60px rgba(0,0,0,.28);
+  --focus-ring: 0 0 0 3px rgba(201,162,75,.45);
+}
+
+/* ---- Вариант A — Navy & Gold (default) ---------------------------------
+   Тёмно-синий фон, золотой акцент. Кино-шоурум, совпадает с логотипом. */
+:root,
+:root[data-theme="a"] {
+  --color-bg: #0e1526;
+  --color-bg-alt: #0a0f1c;
+  --color-surface: #161f38;
+  --color-surface-2: #1c2748;
+  --color-text: #f4f2ea;
+  --color-text-muted: #aab1c8;
+  --color-border: #2b3560;
+  --color-accent: #c9a24b;
+  --color-accent-hover: #ddb968;
+  --color-accent-contrast: #14172a;
+  --color-accent-2: #8fa3c9;
+  --color-success: #6fb98f;
+  --color-danger: #e2836f;
+  --focus-ring: 0 0 0 3px rgba(201,162,75,.45);
+}
+
+/* ---- Вариант B — Cream & Bronze -----------------------------------------
+   Тёплый кремовый фон, бронзовый акцент. Editorial-маркетплейс. */
+:root[data-theme="b"] {
+  --color-bg: #f7f1e3;
+  --color-bg-alt: #efe5cf;
+  --color-surface: #fffcf5;
+  --color-surface-2: #f1e7d0;
+  --color-text: #241d12;
+  --color-text-muted: #6d6250;
+  --color-border: #e1d3ae;
+  --color-accent: #9c6b3e;
+  --color-accent-hover: #b17f4f;
+  --color-accent-contrast: #fffaf1;
+  --color-accent-2: #4a5a4a;
+  --color-success: #4d8a63;
+  --color-danger: #b6503b;
+  --focus-ring: 0 0 0 3px rgba(156,107,62,.35);
+}
+
+/* ---- Вариант C — Charcoal & Copper --------------------------------------
+   Графитовый фон, медный акцент. Мягкий тёмный премиум. */
+:root[data-theme="c"] {
+  --color-bg: #201e1d;
+  --color-bg-alt: #171615;
+  --color-surface: #2a2725;
+  --color-surface-2: #322e2b;
+  --color-text: #f2ede6;
+  --color-text-muted: #b3aa9f;
+  --color-border: #3d3835;
+  --color-accent: #c17a52;
+  --color-accent-hover: #d18d64;
+  --color-accent-contrast: #201e1d;
+  --color-accent-2: #9aa8a3;
+  --color-success: #7fb090;
+  --color-danger: #d97a5f;
+  --focus-ring: 0 0 0 3px rgba(193,122,82,.4);
+}
+
+/* ---- Вариант D — Ivory, Emerald & Brass ---------------------------------
+   Светлый фон, изумрудный + латунный акцент. «Старые деньги». */
+:root[data-theme="d"] {
+  --color-bg: #faf7ee;
+  --color-bg-alt: #f1ead6;
+  --color-surface: #ffffff;
+  --color-surface-2: #f2ecdb;
+  --color-text: #1e2420;
+  --color-text-muted: #5c6a5f;
+  --color-border: #e2dac0;
+  --color-accent: #2f5d4f;
+  --color-accent-hover: #3c7061;
+  --color-accent-contrast: #faf7ee;
+  --color-accent-2: #b08d57;
+  --color-success: #2f5d4f;
+  --color-danger: #a94a3d;
+  --focus-ring: 0 0 0 3px rgba(47,93,79,.35);
+}

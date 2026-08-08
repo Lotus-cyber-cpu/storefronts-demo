@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Отзывы клиентов — АвтоЦентр Брест</title>
+<meta name="description" content="Отзывы клиентов АвтоЦентр Брест о покупке автомобилей с пробегом, лизинге и заказе из-за рубежа.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="crumbs" style="text-align:left"><a href="index.html">Главная</a> / Отзывы</div>
+    <span class="eyebrow">Отзывы</span>
+    <h1 class="font-serif">Что говорят наши клиенты</h1>
+    <p>Реальные отзывы будут добавлены после запуска — сейчас страница показывает формат и раскладку блока.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="review-grid" id="reviews-grid"></div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="banner">
+      <div>
+        <span class="eyebrow">Ваш опыт важен</span>
+        <h2>Купили у нас машину?</h2>
+        <p>Поделитесь отзывом в WhatsApp или Instagram — опубликуем на сайте с вашего согласия.</p>
+      </div>
+      <a href="#" id="review-wa" class="btn btn-primary btn-lg" target="_blank" rel="noopener">Написать отзыв</a>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<div id="contact-bar-root"></div>
+<div id="palette-switcher-root"></div>
+<div id="drawer-root"></div>
+
+<script src="js/cars-data.js"></script>
+<script src="js/partials.js"></script>
+<script src="js/main.js"></script>
+<script>
+  ACB.mountLayout('');
+  document.getElementById('review-wa').href = ACB.WHATSAPP_HREF + `?text=${encodeURIComponent('Здравствуйте! Хочу оставить отзыв о покупке автомобиля.')}`;
+
+  const REVIEWS = [
+    { name: 'Виктор Ш.', text: 'Взял Octavia в лизинг, платёж посчитали за 2 минуты прямо на сайте. Оформили быстро, без беготни по банкам.', initials: 'ВШ' },
+    { name: 'Наталья К.', text: 'Заказывали авто из Германии под наши требования — привезли точно в срок, всё как обещали, машина проверенная.', initials: 'НК' },
+    { name: 'Игорь П.', text: 'Понравилось, что можно было позвонить и всё уточнить голосом, не разбираясь в сложных фильтрах на сайте.', initials: 'ИП' },
+    { name: 'Светлана М.', text: 'Сдала свою старую машину по trade-in, разницу зачли сразу при покупке. Удобно, не пришлось продавать отдельно.', initials: 'СМ' },
+    { name: 'Дмитрий А.', text: 'Приятно, что дали PDF-отчёт по проверке ещё до того, как я приехал смотреть машину вживую.', initials: 'ДА' },
+    { name: 'Ольга В.', text: 'Долго боялась покупать б/у авто, но тут всё объяснили простыми словами и по телефону, и на площадке.', initials: 'ОВ' },
+  ];
+  document.getElementById('reviews-grid').innerHTML = REVIEWS.map(r => `
+    <div class="review-card">
+      <div class="who">
+        <div class="avatar">${r.initials}</div>
+        <div>
+          <div style="font-weight:700">${r.name}</div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+      <p>${r.text}</p>
+    </div>`).join('');
+</script>
+</body>
+</html>

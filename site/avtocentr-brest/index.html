@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>АвтоЦентр Брест — автомобили с пробегом. В наличии и под заказ</title>
+<meta name="description" content="Автосалон «АвтоЦентр Брест»: проверенные автомобили с пробегом в наличии и под индивидуальный заказ из-за рубежа. Лизинг, гарантия, VIN-проверка.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section class="hero">
+  <div class="container">
+    <div>
+      <span class="eyebrow">Автомобили с пробегом · Брест</span>
+      <h1>Машина, которую можно позволить себе уже в этом месяце</h1>
+      <p class="lead">Проверенные автомобили в наличии и под заказ из-за рубежа. Каждая машина — с VIN-проверкой, PDF-отчётом и гарантией. Купить можно в лизинг — платёж считаем сразу.</p>
+      <div class="hero-price-box">
+        <div class="figure">
+          <div class="cap">Например, Skoda Octavia 2021</div>
+          <div class="num">38 900 р.</div>
+        </div>
+        <div class="figure">
+          <div class="cap">В лизинг от</div>
+          <div class="num" style="color:var(--color-accent)">560 р. / мес.</div>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <a href="catalog.html" class="btn btn-primary btn-lg">Смотреть каталог</a>
+        <a href="leasing.html" class="btn btn-outline btn-lg">Рассчитать лизинг</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="art-card">
+        <img src="" data-hero-img alt="Автомобиль в наличии" style="border-radius:16px;aspect-ratio:4/3;object-fit:cover;width:100%">
+        <div class="badge-row" style="margin-top:16px">
+          <span class="badge"><span class="dot">✓</span>VIN проверен</span>
+          <span class="badge"><span class="dot">✓</span>Гарантия</span>
+          <span class="badge"><span class="dot">✓</span>PDF-отчёт</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Почему нам доверяют</span>
+      <h2>Два вопроса, которые мы снимаем сразу</h2>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h3>Каждое авто проверено</h3>
+        <p>VIN-проверка, диагностика и PDF-отчёт по машине до продажи. Что именно проверяем — на странице «Проверка авто».</p>
+      </div>
+      <div class="trust-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 10h18M7 15h.01M11 15h4M5 6h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/></svg></div>
+        <h3>Купить реально — есть лизинг</h3>
+        <p>Считаем ежемесячный платёж прямо на карточке машины. Первый взнос от 10%, оформление — с нашей помощью.</p>
+      </div>
+      <div class="trust-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <h3>Говорим по телефону</h3>
+        <p>Не нужно разбираться в сложном сайте — позвоните или напишите в WhatsApp, мы подберём машину и ответим на вопросы.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container grid-2" style="align-items:center">
+    <div>
+      <span class="eyebrow">Калькулятор</span>
+      <h2 class="font-serif" style="font-size:var(--fs-2xl);margin-top:8px">Посчитайте платёж прямо сейчас</h2>
+      <p style="color:var(--color-text-muted);margin-top:12px">Тот же калькулятор, что и на карточке автомобиля — двигайте ползунки и сразу увидите ежемесячный платёж.</p>
+    </div>
+    <div class="calc-widget" data-calc data-price="45000"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="results-bar">
+      <div class="section-head" style="margin:0">
+        <span class="eyebrow">Витрина</span>
+        <h2 style="margin-top:8px">В наличии сейчас</h2>
+      </div>
+      <a href="catalog.html" class="btn btn-outline">Весь каталог →</a>
+    </div>
+    <div class="car-grid" id="home-cars"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="banner">
+      <div>
+        <span class="eyebrow">Нет нужной модели?</span>
+        <h2>Привезём под заказ из-за рубежа</h2>
+        <p>Подберём машину под ваш бюджет и требования, проверим и доставим в Брест. Пример сроков и этапов — на отдельной странице.</p>
+      </div>
+      <a href="order-abroad.html" class="btn btn-primary btn-lg">Как это работает</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="results-bar">
+      <div class="section-head" style="margin:0">
+        <span class="eyebrow">Отзывы</span>
+        <h2 style="margin-top:8px">Что говорят клиенты</h2>
+      </div>
+      <a href="reviews.html" class="btn btn-outline">Все отзывы →</a>
+    </div>
+    <div class="review-grid" id="home-reviews"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="banner">
+      <div>
+        <span class="eyebrow">Контакты</span>
+        <h2>Заедьте посмотреть на площадку</h2>
+        <p>г. Брест, ул. Примерная, 10 · Ежедневно 9:00–20:00</p>
+      </div>
+      <div class="hero-actions" style="margin-top:0">
+        <a href="tel:+375291234567" class="btn btn-primary btn-lg">Позвонить</a>
+        <a href="contacts.html" class="btn btn-outline btn-lg">Все контакты</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<div id="contact-bar-root"></div>
+<div id="palette-switcher-root"></div>
+<div id="drawer-root"></div>
+
+<script src="js/cars-data.js"></script>
+<script src="js/partials.js"></script>
+<script src="js/main.js"></script>
+<script>
+  ACB.mountLayout('');
+  const homeCars = ACB.CARS.filter(c => c.status === 'instock').slice(0, 6);
+  document.getElementById('home-cars').innerHTML = homeCars.map(c => `
+    <article class="car-card">
+      <div class="thumb">
+        <img src="${c.img}" alt="${c.title}">
+        <div class="thumb-badges">
+          <span class="badge badge-compact" title="VIN проверен"><span class="dot">✓</span></span>
+        </div>
+        <button class="fav-toggle" data-fav-toggle="${c.id}" aria-label="В избранное">
+          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9C.3 8.4 2 4.5 6 4c2.3-.3 4.2 1 6 3.2C13.8 5 15.7 3.7 18 4c4 .5 5.7 4.4 4 8-2.5 4.4-10 9-10 9z"/></svg>
+        </button>
+      </div>
+      <div class="body">
+        <h3>${c.title}</h3>
+        <div class="spec-line">${c.year} г. · ${c.mileage.toLocaleString('ru-RU')} км · ${c.fuel} · ${c.trans}</div>
+        <div class="price-row">
+          <div>
+            <div class="price">${ACB.formatPrice(c.price)}</div>
+            <div class="lease-line">от ${ACB.formatPrice(c.leaseFrom)}/мес в лизинг</div>
+          </div>
+        </div>
+        <a href="car.html?id=${c.id}" class="btn btn-outline btn-block">Подробнее</a>
+      </div>
+    </article>`).join('');
+  document.querySelector('[data-hero-img]').src = homeCars[0] ? homeCars[0].img : ACB.CARS[0].img;
+
+  const REVIEWS = [
+    { name: 'Виктор Ш.', text: 'Взял Octavia в лизинг, платёж посчитали за 2 минуты прямо на сайте. Оформили быстро, без беготни по банкам.', initials: 'ВШ' },
+    { name: 'Наталья К.', text: 'Заказывали авто из Германии под наши требования — привезли точно в срок, всё как обещали, машина проверенная.', initials: 'НК' },
+    { name: 'Игорь П.', text: 'Понравилось, что можно было позвонить и всё уточнить голосом, не разбираясь в сложных фильтрах на сайте.', initials: 'ИП' },
+  ];
+  document.getElementById('home-reviews').innerHTML = REVIEWS.map(r => `
+    <div class="review-card">
+      <div class="who">
+        <div class="avatar">${r.initials}</div>
+        <div>
+          <div style="font-weight:700">${r.name}</div>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+      <p>${r.text}</p>
+    </div>`).join('');
+</script>
+</body>
+</html>

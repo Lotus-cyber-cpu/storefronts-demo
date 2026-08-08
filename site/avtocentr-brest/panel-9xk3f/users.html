@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Пользователи и роли — админ-панель АвтоЦентр Брест</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-shell" id="admin-shell"></div>
+
+<div class="modal-backdrop" id="user-modal-backdrop">
+  <div class="modal">
+    <h2>Добавить сотрудника</h2>
+    <form id="user-form">
+      <div class="a-field"><label>Имя</label><input id="user-name" required></div>
+      <div class="a-field"><label>Email</label><input id="user-email" type="email" required></div>
+      <div class="a-field">
+        <label>Роль</label>
+        <select id="user-role">
+          <option value="admin">Администратор / владелец</option>
+          <option value="manager" selected>Менеджер</option>
+          <option value="accountant">Бухгалтер</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="a-btn a-btn-outline" id="user-cancel">Отмена</button>
+        <button type="submit" class="a-btn a-btn-primary">Добавить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="../js/cars-data.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  if (ACBAdmin.mount('users', 'Пользователи и роли', 'Управление доступом сотрудников к разделам панели')) {
+    const roleLabels = { admin: 'Администратор / владелец', manager: 'Менеджер', accountant: 'Бухгалтер' };
+    const roleAccess = {
+      admin: 'Все разделы',
+      manager: 'Автомобили, заявки, оценка авто, контент главной',
+      accountant: 'Только «Лизинг и документы»',
+    };
+    const backdrop = document.getElementById('user-modal-backdrop');
+
+    function render() {
+      const users = ACBAdmin.get('users');
+      document.getElementById('admin-content').innerHTML = `
+        <div class="panel-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <h2 style="margin:0">Сотрудники (${users.length})</h2>
+            <button class="a-btn a-btn-primary" id="add-user-btn">+ Добавить сотрудника</button>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Имя</th><th>Email</th><th>Роль</th><th>Доступ</th><th></th></tr></thead>
+              <tbody>
+                ${users.map(u => `
+                  <tr>
+                    <td><strong>${u.name}</strong></td>
+                    <td>${u.email}</td>
+                    <td><span class="pill pill-instock">${roleLabels[u.role]}</span></td>
+                    <td style="color:var(--color-text-muted)">${roleAccess[u.role]}</td>
+                    <td><button class="icon-sm-btn" data-del="${u.id}" title="Удалить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg></button></td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+          <p class="hint">Роли и доступы соответствуют §6.1 ТЗ. Администратор видит всё; менеджер — авто, заявки, оценку и контент главной; бухгалтер — только вкладку «Лизинг и документы».</p>
+        </div>`;
+
+      document.querySelectorAll('[data-del]').forEach(btn => btn.addEventListener('click', () => {
+        if (!confirm('Удалить сотрудника из системы?')) return;
+        ACBAdmin.set('users', ACBAdmin.get('users').filter(u => u.id !== btn.dataset.del));
+        ACBAdmin.toast('Сотрудник удалён');
+        render();
+      }));
+      document.getElementById('add-user-btn').addEventListener('click', () => backdrop.classList.add('open'));
+    }
+
+    document.getElementById('user-cancel').addEventListener('click', () => backdrop.classList.remove('open'));
+    backdrop.addEventListener('click', (e) => { if (e.target === backdrop) backdrop.classList.remove('open'); });
+    document.getElementById('user-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const users = ACBAdmin.get('users');
+      users.push({
+        id: 'u-' + Date.now(),
+        name: document.getElementById('user-name').value.trim(),
+        email: document.getElementById('user-email').value.trim(),
+        role: document.getElementById('user-role').value,
+      });
+      ACBAdmin.set('users', users);
+      backdrop.classList.remove('open');
+      ACBAdmin.toast('Сотрудник добавлен');
+      render();
+      e.target.reset();
+    });
+
+    render();
+  }
+</script>
+</body>
+</html>

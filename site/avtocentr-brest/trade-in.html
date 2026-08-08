@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trade-in — оценка вашего авто — АвтоЦентр Брест</title>
+<meta name="description" content="Оцените свой автомобиль онлайн: загрузите фото и данные — получите примерную стоимость для trade-in.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="crumbs" style="text-align:left"><a href="index.html">Главная</a> / Оценка авто</div>
+    <span class="eyebrow">Trade-in</span>
+    <h1 class="font-serif">Сдайте свой автомобиль в зачёт новой покупки</h1>
+    <p>Заполните короткую форму и добавьте фото — назовём примерную стоимость и предложим варианты обмена.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container grid-2">
+    <div>
+      <form class="form-card" data-demo-form="tradein-success">
+        <div class="form-grid">
+          <div class="field"><label>Марка и модель</label><input type="text" placeholder="Например, Toyota Corolla" required></div>
+          <div class="field"><label>Год выпуска</label><input type="number" placeholder="2018" required></div>
+          <div class="field"><label>Пробег, км</label><input type="number" placeholder="95000"></div>
+          <div class="field"><label>Телефон</label><input type="tel" placeholder="+375 29 000-00-00" required></div>
+          <div class="field full">
+            <label>Фото автомобиля</label>
+            <div class="upload-drop" id="upload-drop">
+              <div id="upload-label">Нажмите, чтобы прикрепить фото (демо — файл не отправляется)</div>
+            </div>
+            <input type="file" id="upload-input" accept="image/*" multiple hidden>
+          </div>
+          <div class="field full"><label>Комментарий</label><textarea placeholder="Состояние, комплектация, есть ли повреждения"></textarea></div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-top:20px">Получить оценку</button>
+      </form>
+      <div class="form-success" id="tradein-success">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>
+        <h3 class="font-serif">Заявка на оценку принята</h3>
+        <p style="color:var(--color-text-muted)">Менеджер посмотрит фото и данные и позвонит с примерной стоимостью в течение дня.</p>
+      </div>
+    </div>
+    <div>
+      <div class="section-head" style="margin-bottom:16px">
+        <h2 style="font-size:var(--fs-xl)">Как это работает</h2>
+      </div>
+      <div class="check-list" style="grid-template-columns:1fr">
+        <div class="check-item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><div>Заполняете форму слева и прикладываете несколько фото</div></div>
+        <div class="check-item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><div>Мы называем примерную стоимость по телефону</div></div>
+        <div class="check-item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><div>При очном осмотре подтверждаем точную сумму</div></div>
+        <div class="check-item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><div>Разницу в цене засчитываем при покупке авто из каталога</div></div>
+      </div>
+      <div class="banner" style="margin-top:24px">
+        <div>
+          <span class="eyebrow">Не хотите ждать оценки?</span>
+          <h2 style="font-size:var(--fs-lg)">Позвоните — оценим на слух по телефону</h2>
+        </div>
+        <a href="tel:+375291234567" class="btn btn-primary">Позвонить</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<div id="contact-bar-root"></div>
+<div id="palette-switcher-root"></div>
+<div id="drawer-root"></div>
+
+<script src="js/cars-data.js"></script>
+<script src="js/partials.js"></script>
+<script src="js/main.js"></script>
+<script>
+  ACB.mountLayout('trade-in.html');
+  const drop = document.getElementById('upload-drop');
+  const input = document.getElementById('upload-input');
+  drop.addEventListener('click', () => input.click());
+  input.addEventListener('change', () => {
+    document.getElementById('upload-label').textContent = input.files.length
+      ? `Прикреплено файлов: ${input.files.length}`
+      : 'Нажмите, чтобы прикрепить фото (демо — файл не отправляется)';
+  });
+</script>
+</body>
+</html>

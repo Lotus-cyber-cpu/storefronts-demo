@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title id="page-title">Автомобиль — АвтоЦентр Брест</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section class="section">
+  <div class="container">
+    <div class="crumbs"><a href="index.html">Главная</a> / <a href="catalog.html">Каталог</a> / <span id="crumb-title">Автомобиль</span></div>
+
+    <div class="detail-title" style="margin-bottom:20px">
+      <div>
+        <h1 id="car-title" class="font-serif">—</h1>
+        <div class="spec-line" id="car-subtitle" style="margin-top:6px;font-size:var(--fs-md)"></div>
+      </div>
+      <span class="status-pill" id="car-status"></span>
+    </div>
+
+    <div class="car-detail">
+      <div>
+        <div class="hotspot-viewer" data-hotspot-viewer="" id="hotspot-root">
+          <div class="main-photo">
+            <img alt="Общее фото автомобиля">
+            <div class="dots-layer"></div>
+            <div class="hotspot-preview"></div>
+          </div>
+          <div class="hotspot-strip"></div>
+          <div class="hotspot-hint">Наведите на точку на фото, чтобы увидеть деталь крупным планом — колесо, салон, панель приборов, двигатель</div>
+        </div>
+
+        <div class="section-head" style="margin:40px 0 12px">
+          <h2 style="font-size:var(--fs-xl)">Характеристики</h2>
+        </div>
+        <table class="spec-table" id="spec-table"></table>
+
+        <div class="section-head" style="margin:40px 0 12px">
+          <h2 style="font-size:var(--fs-xl)">Запись на просмотр</h2>
+          <p>Выберите удобные дату и время — подтвердим звонком</p>
+        </div>
+        <div class="form-card">
+          <div class="booking-widget" data-booking>
+            <div class="day-strip"></div>
+            <div class="time-strip"></div>
+            <button class="btn btn-primary btn-block" style="margin-top:20px" data-booking-submit>Записаться на просмотр</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="buy-box">
+          <div class="price" id="buy-price">—</div>
+          <div class="price-sub" id="buy-lease">—</div>
+          <div class="badge-row">
+            <span class="badge"><span class="dot">✓</span>VIN проверен</span>
+            <span class="badge"><span class="dot">🛡</span>Гарантия</span>
+          </div>
+          <div class="badge-row" style="margin-top:8px">
+            <span class="badge"><span class="dot">📄</span>PDF-отчёт</span>
+            <span class="badge"><span class="dot">🔍</span>Фото в деталях</span>
+          </div>
+          <div class="actions">
+            <a href="#" id="pdf-report-link" class="btn btn-outline btn-block">Скачать PDF-отчёт проверки</a>
+            <a href="tel:+375291234567" class="btn btn-primary btn-lg btn-block">Позвонить и уточнить</a>
+            <a id="wa-link" class="btn btn-ghost btn-block" target="_blank" rel="noopener">Написать в WhatsApp</a>
+            <button class="btn btn-ghost btn-block" id="fav-toggle-detail" data-fav-toggle="">В избранное</button>
+          </div>
+        </div>
+
+        <div style="margin-top:20px">
+          <h3 class="font-serif" style="font-size:var(--fs-lg);margin-bottom:12px">Калькулятор лизинга</h3>
+          <div class="calc-widget" data-calc data-price=""></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Похожие варианты</span>
+      <h2>Также может подойти</h2>
+    </div>
+    <div class="car-grid" id="related-cars"></div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<div id="contact-bar-root"></div>
+<div id="palette-switcher-root"></div>
+<div id="drawer-root"></div>
+
+<script src="js/cars-data.js"></script>
+<script src="js/partials.js"></script>
+<script src="js/main.js"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const car = ACB.CARS.find(c => c.id === params.get('id')) || ACB.CARS[0];
+
+  ACB.mountLayout('');
+  document.title = car.title + ' — АвтоЦентр Брест';
+  document.getElementById('page-title').textContent = document.title;
+  document.getElementById('crumb-title').textContent = car.title;
+  document.getElementById('car-title').textContent = `${car.title}, ${car.year}`;
+  document.getElementById('car-subtitle').textContent = `${car.mileage.toLocaleString('ru-RU')} км · ${car.fuel} · ${car.trans} · ${car.country}`;
+  const statusClass = { instock: 'status-instock', order: 'status-order', reserved: 'status-reserved', sold: 'status-sold' }[car.status];
+  const statusEl = document.getElementById('car-status');
+  statusEl.textContent = ACB.STATUS_LABEL[car.status];
+  statusEl.classList.add(statusClass);
+
+  document.getElementById('hotspot-root').dataset.hotspotViewer = car.id;
+  document.getElementById('buy-price').textContent = ACB.formatPrice(car.price);
+  document.getElementById('buy-lease').textContent = car.status !== 'sold' ? `от ${ACB.formatPrice(car.leaseFrom)} / мес в лизинг` : 'Автомобиль продан';
+  document.getElementById('fav-toggle-detail').dataset.favToggle = car.id;
+  document.getElementById('wa-link').href = ACB.WHATSAPP_HREF + `?text=${encodeURIComponent('Здравствуйте! Интересует ' + car.title + ', ' + car.year + ' г.')}`;
+  document.getElementById('pdf-report-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    ACB.toast('PDF-отчёт — демо-заглушка. В реальной сборке здесь будет файл, загруженный менеджером из админ-панели.');
+  });
+
+  const rows = [
+    ['Марка и модель', car.title],
+    ['Год выпуска', car.year],
+    ['Пробег', car.mileage.toLocaleString('ru-RU') + ' км'],
+    ['Страна поставки', car.country],
+    ['Двигатель', car.engine],
+    ['Топливо', car.fuel],
+    ['Коробка передач', car.trans],
+    ['Привод', car.drive],
+    ['Цвет', car.color],
+    ['VIN-проверка', car.vin ? 'Пройдена' : '—'],
+    ['Гарантия', car.warranty ? 'Есть' : '—'],
+  ];
+  document.getElementById('spec-table').innerHTML = rows.map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('');
+
+  document.querySelector('[data-calc]').dataset.price = car.price;
+
+  const related = ACB.CARS.filter(c => c.id !== car.id && c.brand === car.brand).concat(
+    ACB.CARS.filter(c => c.id !== car.id && c.brand !== car.brand)
+  ).slice(0, 3);
+  document.getElementById('related-cars').innerHTML = related.map(c => `
+    <article class="car-card">
+      <div class="thumb"><img src="${c.img}" alt="${c.title}"></div>
+      <div class="body">
+        <h3>${c.title}</h3>
+        <div class="spec-line">${c.year} г. · ${c.mileage.toLocaleString('ru-RU')} км</div>
+        <div class="price-row"><div class="price">${ACB.formatPrice(c.price)}</div></div>
+        <a href="car.html?id=${c.id}" class="btn btn-outline btn-block">Подробнее</a>
+      </div>
+    </article>`).join('');
+
+
+</script>
+</body>
+</html>

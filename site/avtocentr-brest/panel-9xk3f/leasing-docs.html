@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Лизинг и документы — админ-панель АвтоЦентр Брест</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-shell" id="admin-shell"></div>
+
+<script src="../js/cars-data.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  if (ACBAdmin.mount('leasing-docs', 'Лизинг и документы', 'Вкладка бухгалтера: документы клиентов и статус оформления по каждой заявке на лизинг')) {
+    const LS_DOCS = 'acb_admin_leasing_status';
+    const docStatusMap = { review: 'На рассмотрении', approved: 'Одобрено', declined: 'Отказано' };
+
+    function getDocStatus() {
+      try { return JSON.parse(localStorage.getItem(LS_DOCS)) || {}; } catch (e) { return {}; }
+    }
+    function setDocStatus(obj) { localStorage.setItem(LS_DOCS, JSON.stringify(obj)); }
+
+    function render() {
+      const leads = ACBAdmin.get('leads').filter(l => l.type === 'Лизинг');
+      const docStatus = getDocStatus();
+
+      document.getElementById('admin-content').innerHTML = `
+        <div class="panel-card">
+          <h2>Заявки на лизинг (${leads.length})</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Клиент</th><th>Автомобиль</th><th>Дата</th><th>Документы клиента</th><th>Статус оформления</th></tr></thead>
+              <tbody>
+                ${leads.map(l => {
+                  const st = docStatus[l.id] || 'review';
+                  return `
+                  <tr>
+                    <td><strong>${l.name}</strong><br><span style="color:var(--color-text-muted)">${l.phone}</span></td>
+                    <td>${l.subject}</td>
+                    <td>${l.date}</td>
+                    <td>
+                      <button class="a-btn a-btn-outline" data-upload="${l.id}" style="height:34px;padding:0 12px;font-size:12.5px">📎 Загрузить / посмотреть</button>
+                      <div class="hint" id="doc-count-${l.id}">${(docStatus['files_' + l.id] || 0)} файлов</div>
+                    </td>
+                    <td>
+                      <select class="badge-select" data-doc-status="${l.id}">
+                        ${Object.entries(docStatusMap).map(([k, v]) => `<option value="${k}" ${k === st ? 'selected' : ''}>${v}</option>`).join('')}
+                      </select>
+                    </td>
+                  </tr>`;
+                }).join('')}
+                ${leads.length === 0 ? `<tr><td colspan="5" style="text-align:center;color:var(--color-text-muted);padding:30px">Заявок на лизинг пока нет</td></tr>` : ''}
+              </tbody>
+            </table>
+          </div>
+          <p class="hint">В демо-версии загрузка документов имитируется — файл не отправляется никуда за пределы вашего браузера.</p>
+        </div>`;
+
+      document.querySelectorAll('[data-doc-status]').forEach(sel => sel.addEventListener('change', () => {
+        const obj = getDocStatus();
+        obj[sel.dataset.docStatus] = sel.value;
+        setDocStatus(obj);
+        ACBAdmin.toast('Статус оформления: ' + docStatusMap[sel.value]);
+      }));
+      document.querySelectorAll('[data-upload]').forEach(btn => btn.addEventListener('click', () => {
+        const obj = getDocStatus();
+        const key = 'files_' + btn.dataset.upload;
+        obj[key] = (obj[key] || 0) + 1;
+        setDocStatus(obj);
+        document.getElementById('doc-count-' + btn.dataset.upload).textContent = obj[key] + ' файлов';
+        ACBAdmin.toast('Документ добавлен (демо)');
+      }));
+    }
+    render();
+  }
+</script>
+</body>
+</html>

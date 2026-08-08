@@ -1,0 +1,33 @@
+<svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="АвтоЦентр Брест">
+  <circle cx="300" cy="300" r="292" fill="#ffffff"/>
+  <g fill="none" stroke="#12172a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <!-- roofline + windshield -->
+    <path d="M175 235 C 205 178, 255 150, 300 150 C 350 150, 392 172, 430 218"/>
+    <path d="M430 218 C 460 222, 480 232, 495 248"/>
+    <!-- hood / body top -->
+    <path d="M108 262 C 130 250, 155 240, 175 235"/>
+    <!-- body outline -->
+    <path d="M92 300 C 92 278, 98 268, 108 262 L 495 248 C 512 250, 522 262, 524 278 L 524 300"/>
+    <!-- lower body + speed lines -->
+    <path d="M92 300 L 524 300" />
+    <path d="M104 322 L 232 322" stroke-width="7"/>
+    <path d="M104 322 C 150 348, 420 348, 468 322" stroke-width="7"/>
+    <path d="M330 322 L 512 322" stroke-width="7"/>
+    <!-- headlight -->
+    <ellipse cx="472" cy="268" rx="26" ry="13" transform="rotate(-6 472 268)"/>
+    <!-- door line -->
+    <path d="M255 240 L 262 300"/>
+    <!-- side vent detail -->
+    <path d="M300 258 L 340 253"/>
+  </g>
+  <g fill="#12172a">
+    <circle cx="182" cy="330" r="46"/>
+    <circle cx="182" cy="330" r="20" fill="#ffffff"/>
+    <circle cx="182" cy="330" r="7" fill="#12172a"/>
+    <circle cx="398" cy="330" r="46"/>
+    <circle cx="398" cy="330" r="20" fill="#ffffff"/>
+    <circle cx="398" cy="330" r="7" fill="#12172a"/>
+  </g>
+  <text x="300" y="450" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="76" fill="#12172a" letter-spacing="1">АвтоЦентр</text>
+  <text x="300" y="524" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="76" fill="#12172a" letter-spacing="2">Брест</text>
+</svg>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Оценка авто — админ-панель АвтоЦентр Брест</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-shell" id="admin-shell"></div>
+
+<div class="modal-backdrop" id="tradein-modal-backdrop">
+  <div class="modal" id="tradein-modal-body"></div>
+</div>
+
+<script src="../js/cars-data.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  if (ACBAdmin.mount('trade-in', 'Оценка авто (trade-in)', 'Входящие заявки на оценку с фото от клиентов')) {
+    const statusMap = { new: 'Новая', review: 'На осмотре', approved: 'Оценена' };
+    const backdrop = document.getElementById('tradein-modal-backdrop');
+
+    function render() {
+      const list = ACBAdmin.get('tradein');
+      document.getElementById('admin-content').innerHTML = `
+        <div class="panel-card">
+          <h2>Заявки на оценку (${list.length})</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Клиент</th><th>Автомобиль</th><th>Пробег</th><th>Фото</th><th>Дата</th><th>Статус</th><th></th></tr></thead>
+              <tbody>
+                ${list.map(t => `
+                  <tr>
+                    <td><strong>${t.name}</strong><br><span style="color:var(--color-text-muted)">${t.phone}</span></td>
+                    <td>${t.car}</td>
+                    <td>${t.mileage}</td>
+                    <td>${t.photos} фото</td>
+                    <td>${t.date}</td>
+                    <td>
+                      <select class="badge-select" data-status-for="${t.id}">
+                        ${Object.entries(statusMap).map(([k, v]) => `<option value="${k}" ${k === t.status ? 'selected' : ''}>${v}</option>`).join('')}
+                      </select>
+                    </td>
+                    <td><button class="a-btn a-btn-outline" data-view="${t.id}" style="height:34px;padding:0 12px;font-size:12.5px">Смотреть фото</button></td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+
+      document.querySelectorAll('[data-status-for]').forEach(sel => sel.addEventListener('change', () => {
+        const items = ACBAdmin.get('tradein');
+        items.find(t => t.id === sel.dataset.statusFor).status = sel.value;
+        ACBAdmin.set('tradein', items);
+        ACBAdmin.toast('Статус обновлён');
+      }));
+      document.querySelectorAll('[data-view]').forEach(btn => btn.addEventListener('click', () => openView(btn.dataset.view)));
+    }
+
+    function openView(id) {
+      const t = ACBAdmin.get('tradein').find(x => x.id === id);
+      const photos = Array.from({ length: t.photos }).map((_, i) =>
+        ACB.svgPlaceholder({ hueA: 20 + i * 30, hueB: 200, label: 'Фото клиента ' + (i + 1), icon: i % 2 ? 'wheel' : 'car', w: 400, h: 300 }));
+      document.getElementById('tradein-modal-body').innerHTML = `
+        <h2>${t.car}</h2>
+        <p class="hint" style="margin-bottom:16px">${t.name} · ${t.phone} · пробег ${t.mileage}</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          ${photos.map(p => `<img src="${p}" style="border-radius:10px;aspect-ratio:4/3;object-fit:cover">`).join('')}
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="a-btn a-btn-outline" id="tradein-close">Закрыть</button>
+        </div>`;
+      backdrop.classList.add('open');
+      document.getElementById('tradein-close').addEventListener('click', () => backdrop.classList.remove('open'));
+    }
+    backdrop.addEventListener('click', (e) => { if (e.target === backdrop) backdrop.classList.remove('open'); });
+
+    render();
+  }
+</script>
+</body>
+</html>

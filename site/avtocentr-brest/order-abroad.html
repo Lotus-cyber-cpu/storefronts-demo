@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Заказ авто из-за рубежа — АвтоЦентр Брест</title>
+<meta name="description" content="Подберём и привезём автомобиль под заказ из-за рубежа: подбор, проверка, доставка, растаможка.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="crumbs" style="text-align:left"><a href="index.html">Главная</a> / Заказ из-за рубежа</div>
+    <span class="eyebrow">Под заказ</span>
+    <h1 class="font-serif">Привезём именно ту машину, которая нужна</h1>
+    <p>Подбираем автомобиль под ваш бюджет и требования в Европе, проверяем перед покупкой и доставляем в Брест «под ключ».</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Процесс</span>
+      <h2>Как проходит заказ</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <h3>Подбор</h3>
+        <p>Уточняем марку, бюджет и требования — находим подходящие варианты за рубежом.</p>
+      </div>
+      <div class="step">
+        <h3>Проверка</h3>
+        <p>Осматриваем машину на месте, проверяем VIN и историю перед покупкой.</p>
+      </div>
+      <div class="step">
+        <h3>Доставка</h3>
+        <p>Перевозим автомобиль в Брест — маршрут и сроки согласуем заранее.</p>
+      </div>
+      <div class="step">
+        <h3>Растаможка</h3>
+        <p>Оформляем все таможенные процедуры — вы получаете готовый к регистрации автомобиль.</p>
+      </div>
+    </div>
+
+    <div class="banner" style="margin-top:48px">
+      <div>
+        <span class="eyebrow">Сроки и гарантии</span>
+        <h2>Ориентировочно 3–6 недель от заявки до получения ключей</h2>
+        <p>Точный срок зависит от страны и модели — озвучим при подборе. На каждый привезённый автомобиль действуют такая же проверка и гарантия, как на машины из наличия.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head text-center mx-auto" style="max-width:600px;text-align:center">
+      <span class="eyebrow">Заявка</span>
+      <h2>Хочу такую машину</h2>
+      <p>Опишите, что ищете — подберём варианты и озвучим стоимость с доставкой</p>
+    </div>
+    <form class="form-card" style="max-width:640px;margin:32px auto 0" data-demo-form="order-success">
+      <div class="form-grid">
+        <div class="field"><label>Имя</label><input type="text" placeholder="Как к вам обращаться" required></div>
+        <div class="field"><label>Телефон</label><input type="tel" placeholder="+375 29 000-00-00" required></div>
+        <div class="field"><label>Марка и модель</label><input type="text" placeholder="Например, Volkswagen Tiguan"></div>
+        <div class="field"><label>Бюджет</label><input type="text" placeholder="До 45 000 р."></div>
+        <div class="field full"><label>Пожелания</label><textarea placeholder="Год, пробег, комплектация, страна поставки"></textarea></div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-top:20px">Отправить заявку</button>
+    </form>
+    <div class="form-success" id="order-success" style="max-width:640px;margin:0 auto">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>
+      <h3 class="font-serif">Заявка принята</h3>
+      <p style="color:var(--color-text-muted)">Начнём подбор вариантов и свяжемся с вами в ближайшее время.</p>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<div id="contact-bar-root"></div>
+<div id="palette-switcher-root"></div>
+<div id="drawer-root"></div>
+
+<script src="js/cars-data.js"></script>
+<script src="js/partials.js"></script>
+<script src="js/main.js"></script>
+<script>ACB.mountLayout('order-abroad.html');</script>
+</body>
+</html>

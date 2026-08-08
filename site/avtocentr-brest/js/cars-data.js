@@ -81,7 +81,7 @@
     { key: 'engine', label: 'Двигатель', x: 85, y: 55, icon: 'engine' },
   ];
 
-  const CARS = [
+  const SEED_CARS = [
     { id: 'toyota-camry-2020', brand: 'Toyota', model: 'Camry', year: 2020, price: 54900, mileage: 61000, country: 'Германия', fuel: 'Бензин', trans: 'Автомат', engine: '2.5 л, 181 л.с.', drive: 'Передний', color: 'Чёрный', vin: true, warranty: true, report: true, status: 'instock', hue: [206, 230] },
     { id: 'volkswagen-passat-2019', brand: 'Volkswagen', model: 'Passat B8', year: 2019, price: 41500, mileage: 88000, country: 'Литва', fuel: 'Дизель', trans: 'Автомат', engine: '2.0 л, 150 л.с.', drive: 'Передний', color: 'Серый', vin: true, warranty: true, report: true, status: 'instock', hue: [14, 40] },
     { id: 'skoda-octavia-2021', brand: 'Skoda', model: 'Octavia', year: 2021, price: 38900, mileage: 34000, country: 'Беларусь (в наличии)', fuel: 'Бензин', trans: 'Механика', engine: '1.4 л, 150 л.с.', drive: 'Передний', color: 'Белый', vin: true, warranty: true, report: true, status: 'instock', hue: [150, 190] },
@@ -91,18 +91,55 @@
     { id: 'mercedes-e200-2017', brand: 'Mercedes-Benz', model: 'E200', year: 2017, price: 47500, mileage: 121000, country: 'Германия', fuel: 'Бензин', trans: 'Автомат', engine: '2.0 л, 184 л.с.', drive: 'Задний', color: 'Чёрный', vin: true, warranty: true, report: true, status: 'instock', hue: [222, 250] },
     { id: 'renault-koleos-2019', brand: 'Renault', model: 'Koleos', year: 2019, price: 36900, mileage: 74000, country: 'Польша', fuel: 'Дизель', trans: 'Вариатор', engine: '2.0 л, 177 л.с.', drive: 'Полный', color: 'Коричневый', vin: true, warranty: true, report: true, status: 'instock', hue: [28, 50] },
     { id: 'nissan-qashqai-2021', brand: 'Nissan', model: 'Qashqai', year: 2021, price: 43900, mileage: 39000, country: 'Беларусь (в наличии)', fuel: 'Бензин', trans: 'Вариатор', engine: '1.3 л, 140 л.с.', drive: 'Передний', color: 'Белый', vin: true, warranty: true, report: true, status: 'sold', hue: [190, 210] },
+    { id: 'mazda-cx5-2021', brand: 'Mazda', model: 'CX-5', year: 2021, price: 45900, mileage: 48000, country: 'Германия', fuel: 'Бензин', trans: 'Автомат', engine: '2.5 л, 194 л.с.', drive: 'Полный', color: 'Серый', vin: true, warranty: true, report: true, status: 'instock', hue: [268, 296] },
   ];
 
-  CARS.forEach(c => {
-    c.title = `${c.brand} ${c.model}`;
-    c.img = svgPlaceholder({ hueA: c.hue[0], hueB: c.hue[1], label: `${c.brand} ${c.model}`, icon: 'car' });
+  function isGeneratedPlaceholder(img) {
+    return typeof img === 'string' && img.indexOf('data:image/svg+xml') === 0;
+  }
+
+  function buildFullCar(raw) {
+    const c = Object.assign({}, raw);
+    c.title = c.title || `${c.brand} ${c.model}`;
+    const hue = c.hue || [210, 225];
+    const hasCustomPhoto = c.img && !isGeneratedPlaceholder(c.img);
+    if (!hasCustomPhoto) {
+      c.img = svgPlaceholder({ hueA: hue[0], hueB: hue[1], label: c.title, icon: 'car' });
+    }
     c.thumbSmall = c.img;
     c.hotspotPhotos = HOTSPOTS.map(h => ({
       ...h,
-      img: svgPlaceholder({ hueA: c.hue[0], hueB: c.hue[1], label: h.label, icon: h.icon, w: 480, h: 360 }),
+      img: svgPlaceholder({ hueA: hue[0], hueB: hue[1], label: h.label, icon: h.icon, w: 480, h: 360 }),
     }));
     c.leaseFrom = Math.round((c.price * 0.85) / 60 / 5) * 5; // грубая оценка платежа для карточки
-  });
+    return c;
+  }
+
+  // Если в этом браузере уже открывали админку — она хранит свою (редактируемую)
+  // копию машин в localStorage под тем же ключом. Публичный сайт подхватывает
+  // эти правки (фото, цену, статус), чтобы демо ощущалось как единая система.
+  function loadAdminOverrides() {
+    try {
+      const raw = localStorage.getItem('acb_admin_cars');
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) && parsed.length ? parsed : null;
+    } catch (e) { return null; }
+  }
+
+  function buildCars() {
+    const overrides = loadAdminOverrides();
+    if (!overrides) return SEED_CARS.map(buildFullCar);
+    const seedById = {};
+    SEED_CARS.forEach(c => { seedById[c.id] = c; });
+    const NEW_CAR_DEFAULTS = { fuel: '—', trans: '—', engine: '—', drive: '—', color: '—', vin: true, warranty: true, hue: [210, 225] };
+    return overrides.map(admin => {
+      const seed = seedById[admin.id] || NEW_CAR_DEFAULTS;
+      return buildFullCar({ ...seed, ...admin });
+    });
+  }
+
+  const CARS = buildCars();
 
   const STATUS_LABEL = {
     instock: 'В наличии',

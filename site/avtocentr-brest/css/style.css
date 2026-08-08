@@ -154,8 +154,26 @@ h1, h2, h3, .font-serif { font-family: var(--font-serif); font-weight: 700; }
 .hero-price-box .figure .num { font-family: var(--font-serif); font-size: var(--fs-xl); font-weight: 700; }
 .hero-price-box .figure .cap { color: var(--color-text-muted); font-size: var(--fs-sm); }
 .hero-actions { margin-top: var(--sp-6); display: flex; gap: var(--sp-3); flex-wrap: wrap; }
-.hero-art { position: relative; }
-.hero-art .art-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--sp-5); box-shadow: var(--shadow-lg); }
+
+/* ---------- Hero car picker (выбор из 10 машин, справа от заголовка) ---------- */
+.hero-picker { display: flex; flex-direction: column; gap: var(--sp-4); }
+.picker-preview {
+  position: relative; aspect-ratio: 1/1; border-radius: var(--radius-lg); overflow: hidden;
+  border: 1px solid var(--color-border); box-shadow: var(--shadow-lg); background: var(--color-surface);
+}
+.picker-preview img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .15s var(--ease); }
+.picker-preview-info { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--sp-5); background: linear-gradient(0deg, rgba(0,0,0,.75), rgba(0,0,0,0) 70%); }
+.picker-preview-info .ppi-title { color: #fff; font-family: var(--font-serif); font-weight: 700; font-size: var(--fs-lg); margin-bottom: var(--sp-3); }
+.picker-preview-info .badge-row .badge { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.3); color: #fff; }
+.picker-hint { font-size: var(--fs-sm); color: var(--color-text-muted); font-weight: 700; }
+.picker-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sp-2); }
+.picker-tile { aspect-ratio: 1/1; border-radius: var(--radius-md); overflow: hidden; border: 2px solid transparent; padding: 0; position: relative; background: var(--color-surface); }
+.picker-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.picker-tile.active { border-color: var(--color-accent); box-shadow: 0 0 0 2px var(--color-accent); }
+.picker-tile .pt-label {
+  position: absolute; left: 0; right: 0; bottom: 0; font-size: 10px; font-weight: 800; color: #fff;
+  background: rgba(0,0,0,.55); padding: 3px 4px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 
 /* ---------- Trust block ---------- */
 .trust-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--sp-5); }
@@ -196,7 +214,7 @@ h1, h2, h3, .font-serif { font-family: var(--font-serif); font-weight: 700; }
   overflow: hidden; display: flex; flex-direction: column; transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 .car-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-.car-card .thumb { position: relative; aspect-ratio: 4/3; background: var(--color-bg-alt); }
+.car-card .thumb { position: relative; aspect-ratio: 1/1; background: var(--color-bg-alt); }
 .car-card .thumb img { width: 100%; height: 100%; object-fit: cover; }
 .car-card .thumb-badges { position: absolute; top: var(--sp-3); left: var(--sp-3); display: flex; gap: 6px; }
 .car-card .fav-toggle {

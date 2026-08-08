@@ -19,6 +19,18 @@
     <h2 id="car-modal-title">Добавить автомобиль</h2>
     <form id="car-form">
       <input type="hidden" id="car-id">
+      <div class="a-field">
+        <label>Фото на плитке</label>
+        <div class="photo-upload" id="car-photo-drop">
+          <img id="car-photo-preview" alt="" hidden>
+          <div id="car-photo-placeholder" class="photo-upload-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="14" r="3.5"/></svg>
+            Нажмите, чтобы загрузить фото
+          </div>
+        </div>
+        <input type="file" id="car-photo-input" accept="image/*" hidden>
+        <p class="hint">Если не загрузить — останется автоматическая заглушка-иллюстрация</p>
+      </div>
       <div class="a-grid-2">
         <div class="a-field"><label>Марка</label><input id="car-brand" required></div>
         <div class="a-field"><label>Модель</label><input id="car-model" required></div>
@@ -49,7 +61,7 @@
           </select>
         </div>
       </div>
-      <p class="hint">Фото и детальные фото для наведения (§3.1 ТЗ) загружаются отдельным шагом после создания карточки — в демо используется автоплейсхолдер.</p>
+      <p class="hint">Загруженное фото сразу появится на плитке машины на сайте (в каталоге и на главной). Детальные фото для наведения (§3.1 ТЗ — колесо, салон, приборы, двигатель) в демо остаются автоплейсхолдером.</p>
       <div class="modal-actions">
         <button type="button" class="a-btn a-btn-outline" id="car-cancel">Отмена</button>
         <button type="submit" class="a-btn a-btn-primary">Сохранить</button>
@@ -64,6 +76,44 @@
   if (ACBAdmin.mount('cars', 'Автомобили', 'Карточки автомобилей: фото, характеристики, цена, статус, PDF-отчёт')) {
     const statusMap = { instock: 'В наличии', order: 'Под заказ', reserved: 'Резерв', sold: 'Продан' };
     const backdrop = document.getElementById('car-modal-backdrop');
+    let pendingImg = null;
+
+    function resizeAndEncode(file, maxDim, quality) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = new Image();
+          img.onload = () => {
+            let { width, height } = img;
+            if (width > height && width > maxDim) { height = Math.round(height * maxDim / width); width = maxDim; }
+            else if (height >= width && height > maxDim) { width = Math.round(width * maxDim / height); height = maxDim; }
+            const canvas = document.createElement('canvas');
+            canvas.width = width; canvas.height = height;
+            canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+          img.onerror = () => reject(new Error('image load failed'));
+          img.src = reader.result;
+        };
+        reader.onerror = () => reject(new Error('file read failed'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    document.getElementById('car-photo-drop').addEventListener('click', () => document.getElementById('car-photo-input').click());
+    document.getElementById('car-photo-input').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        pendingImg = await resizeAndEncode(file, 640, 0.72);
+        const preview = document.getElementById('car-photo-preview');
+        preview.src = pendingImg;
+        preview.hidden = false;
+        document.getElementById('car-photo-placeholder').hidden = true;
+      } catch (err) {
+        ACBAdmin.toast('Не удалось загрузить это фото');
+      }
+    });
 
     function render() {
       const cars = ACBAdmin.get('cars');
@@ -124,6 +174,12 @@
     function openModal(id) {
       const list = ACBAdmin.get('cars');
       const car = list.find(c => c.id === id);
+      pendingImg = null;
+      document.getElementById('car-photo-input').value = '';
+      const preview = document.getElementById('car-photo-preview');
+      const placeholder = document.getElementById('car-photo-placeholder');
+      if (car) { preview.src = car.img; preview.hidden = false; placeholder.hidden = true; }
+      else { preview.src = ''; preview.hidden = true; placeholder.hidden = false; }
       document.getElementById('car-modal-title').textContent = car ? 'Редактировать автомобиль' : 'Добавить автомобиль';
       document.getElementById('car-id').value = id || '';
       document.getElementById('car-brand').value = car ? car.brand : '';
@@ -154,17 +210,19 @@
         status: document.getElementById('car-status').value,
         hasReport: document.getElementById('car-report').value === '1',
       };
+      if (pendingImg) data.img = pendingImg;
       if (id) {
         const item = list.find(c => c.id === id);
         Object.assign(item, data);
         ACBAdmin.toast('Изменения сохранены');
       } else {
         data.id = 'car-' + Date.now();
-        data.img = ACB.svgPlaceholder({ hueA: 210, hueB: 230, label: data.title, icon: 'car' });
+        if (!data.img) data.img = ACB.svgPlaceholder({ hueA: 210, hueB: 230, label: data.title, icon: 'car' });
         list.push(data);
         ACBAdmin.toast('Автомобиль добавлен');
       }
       ACBAdmin.set('cars', list);
+      pendingImg = null;
       backdrop.classList.remove('open');
       render();
     });

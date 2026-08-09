@@ -248,22 +248,11 @@
     });
   }
 
-  /* ---------------- Demo notice info ---------------- */
-  function initDemoNotice() {
-    const link = document.getElementById('demo-notice-info');
-    if (!link) return;
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      toast('Это черновая сборка для проверки структуры, UX и палитры — контент и фото будут заменены на реальные');
-    });
-  }
-
   /* ---------------- Boot ---------------- */
   document.addEventListener('acb:layout-mounted', () => {
     initPalette();
     initBurger();
     initFavorites();
-    initDemoNotice();
   });
   document.addEventListener('DOMContentLoaded', () => {
     initPalette();

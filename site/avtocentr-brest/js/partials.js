@@ -29,7 +29,6 @@
   function headerHTML(active) {
     const nav = NAV_ITEMS.map(i => `<a href="${i.href}" class="${active === i.href ? 'active' : ''}">${i.label}</a>`).join('');
     return `
-    <div class="demo-notice">Демо-версия для согласования дизайна и структуры сайта. Фото, цены и контакты — временные, до передачи материалов клиентом · <a href="#" id="demo-notice-info">что это значит?</a></div>
     <header class="site-header">
       <div class="container">
         <a href="index.html" class="brand">

@@ -6,6 +6,15 @@
 html { scroll-behavior: smooth; }
 html, body { overflow-x: hidden; }
 
+/* Grid items default to min-width:auto, which sizes the track to fit the
+   widest content (e.g. the hotspot strip) instead of the available space —
+   that's what was pushing car.html off-screen on narrow viewports. */
+.hero .container > *, .trust-grid > *, .filters > *, .car-grid > *, .car-detail > *,
+.steps > *, .form-grid > *, .review-grid > *, .footer-grid > *, .about-grid > *,
+.stat-row > *, .check-list > *, .contacts-grid > *, .grid-2 > * {
+  min-width: 0;
+}
+
 body {
   margin: 0;
   background: var(--color-bg);

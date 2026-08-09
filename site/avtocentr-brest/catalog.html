@@ -129,7 +129,7 @@
         <div class="price-row">
           <div>
             <div class="price">${ACB.formatPrice(c.price)}</div>
-            ${c.status !== 'sold' ? `<div class="lease-line">от ${ACB.formatPrice(c.leaseFrom)}/мес в лизинг</div>` : ''}
+            <div class="lease-line">${c.status !== 'sold' ? `от ${ACB.formatPrice(c.leaseFrom)}/мес в лизинг` : 'Автомобиль продан'}</div>
           </div>
         </div>
         <a href="car.html?id=${c.id}" class="btn btn-outline btn-block">Подробнее</a>

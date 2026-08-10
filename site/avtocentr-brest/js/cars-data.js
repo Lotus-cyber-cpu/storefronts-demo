@@ -100,12 +100,22 @@
     return typeof img === 'string' && img.indexOf('data:image/svg+xml') === 0;
   }
 
+  // Static files like assets/cars/*.jpg are referenced relative to the
+  // repo root, but this script also loads from panel/*.html (one level
+  // deeper) — resolve the path against the page that's actually running it.
+  function resolveAssetPath(p) {
+    if (!p || p.indexOf('data:') === 0 || /^https?:\/\//.test(p)) return p;
+    return (location.pathname.indexOf('/panel') !== -1 ? '../' : '') + p;
+  }
+
   function buildFullCar(raw) {
     const c = Object.assign({}, raw);
     c.title = c.title || `${c.brand} ${c.model}`;
     const hue = c.hue || [210, 225];
     const hasCustomPhoto = c.img && !isGeneratedPlaceholder(c.img);
-    if (!hasCustomPhoto) {
+    if (hasCustomPhoto) {
+      c.img = resolveAssetPath(c.img);
+    } else {
       c.img = svgPlaceholder({ hueA: hue[0], hueB: hue[1], label: c.title, icon: 'car' });
     }
     c.thumbSmall = c.img;

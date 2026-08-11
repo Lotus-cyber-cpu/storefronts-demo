@@ -60,7 +60,7 @@ h1,h2,h3,h4,p { margin: 0; }
   padding: 0 var(--sp-5);
 }
 
-h1, h2, h3, .font-serif { font-family: var(--font-serif); font-weight: 700; }
+h1, h2, h3, .font-serif { font-family: var(--font-serif); font-weight: 700; overflow-wrap: break-word; }
 
 .eyebrow {
   font-size: var(--fs-sm);
@@ -369,8 +369,8 @@ h1, h2, h3, .font-serif { font-family: var(--font-serif); font-weight: 700; }
 
 /* ---------- Banner ---------- */
 .banner { background: linear-gradient(120deg, var(--color-surface), var(--color-surface-2)); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--sp-7); display: flex; justify-content: space-between; align-items: center; gap: var(--sp-6); flex-wrap: wrap; }
-.banner h2 { font-size: var(--fs-2xl); max-width: 24ch; }
-.banner p { color: var(--color-text-muted); margin-top: var(--sp-3); max-width: 46ch; }
+.banner h2 { font-size: var(--fs-2xl); max-width: 24ch; overflow-wrap: break-word; }
+.banner p { color: var(--color-text-muted); margin-top: var(--sp-3); max-width: 46ch; overflow-wrap: break-word; }
 
 /* ---------- Footer ---------- */
 .site-footer { border-top: 1px solid var(--color-border); padding: var(--sp-8) 0 var(--sp-6); background: var(--color-bg-alt); }

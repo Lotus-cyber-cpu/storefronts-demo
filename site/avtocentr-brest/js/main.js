@@ -61,8 +61,28 @@
     const btn = document.getElementById('burger-btn');
     const nav = document.getElementById('main-nav');
     if (!btn || !nav) return;
-    function open() { nav.classList.add('open'); document.body.classList.add('nav-open'); }
-    function close() { nav.classList.remove('open'); document.body.classList.remove('nav-open'); }
+    // overflow:hidden на body не блокирует тач-скролл в мобильных браузерах (iOS Safari
+    // и т.п.) — страница «ездит» под открытым меню. Реально блокирует только фиксация
+    // body через position:fixed с сохранением текущей позиции прокрутки.
+    let scrollY = 0;
+    function open() {
+      scrollY = window.scrollY || window.pageYOffset;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      nav.classList.add('open');
+      document.body.classList.add('nav-open');
+    }
+    function close() {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      nav.classList.remove('open');
+      document.body.classList.remove('nav-open');
+      window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
+    }
     btn.addEventListener('click', () => { nav.classList.contains('open') ? close() : open(); });
     nav.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
     // клик по свободному месту меню (не по ссылке) тоже закрывает его

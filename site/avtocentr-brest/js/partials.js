@@ -103,6 +103,7 @@
   function contactBarHTML() {
     return `
     <div class="contact-bar">
+      <a class="fab fab-ig" href="${INSTAGRAM_HREF}" target="_blank" rel="noopener" aria-label="Instagram">${ICONS.instagram}</a>
       <a class="fab fab-wa" href="${WHATSAPP_HREF}" target="_blank" rel="noopener" aria-label="Написать в WhatsApp">${ICONS.whatsapp}</a>
       <a class="fab fab-call" href="${PHONE_HREF}" aria-label="Позвонить">${ICONS.phone}</a>
     </div>
@@ -115,12 +116,17 @@
   function paletteSwitcherHTML() {
     return `
     <div class="palette-switcher" role="group" aria-label="Выбор цветовой палитры">
-      <span class="ps-label">Палитра (§5.1 ТЗ)</span>
-      <div class="ps-options">
-        <button class="ps-swatch ps-a" data-theme="a" title="A — Navy &amp; Gold" aria-pressed="false"></button>
-        <button class="ps-swatch ps-b" data-theme="b" title="B — Cream &amp; Bronze" aria-pressed="false"></button>
-        <button class="ps-swatch ps-c" data-theme="c" title="C — Charcoal &amp; Copper" aria-pressed="false"></button>
-        <button class="ps-swatch ps-d" data-theme="d" title="D — Ivory, Emerald &amp; Brass" aria-pressed="false"></button>
+      <button class="ps-toggle" id="ps-toggle" aria-label="Выбор палитры" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="7.5" cy="10.3" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="7.3" r="1.3" fill="currentColor" stroke="none"/><circle cx="16.5" cy="10.3" r="1.3" fill="currentColor" stroke="none"/><circle cx="10" cy="15.2" r="1.3" fill="currentColor" stroke="none"/></svg>
+      </button>
+      <div class="ps-panel">
+        <span class="ps-label">Палитра (§5.1 ТЗ)</span>
+        <div class="ps-options">
+          <button class="ps-swatch ps-a" data-theme="a" title="A — Navy &amp; Gold" aria-pressed="false"></button>
+          <button class="ps-swatch ps-b" data-theme="b" title="B — Cream &amp; Bronze" aria-pressed="false"></button>
+          <button class="ps-swatch ps-c" data-theme="c" title="C — Charcoal &amp; Copper" aria-pressed="false"></button>
+          <button class="ps-swatch ps-d" data-theme="d" title="D — Ivory, Emerald &amp; Brass" aria-pressed="false"></button>
+        </div>
       </div>
     </div>`;
   }

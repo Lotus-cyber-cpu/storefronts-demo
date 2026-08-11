@@ -30,6 +30,7 @@
     const swatches = document.querySelectorAll('.ps-swatch');
     const current = document.documentElement.getAttribute('data-theme') || 'a';
     swatches.forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.theme === current)));
+    const switcher = document.querySelector('.palette-switcher');
     swatches.forEach(btn => btn.addEventListener('click', () => {
       const theme = btn.dataset.theme;
       document.documentElement.setAttribute('data-theme', theme);
@@ -37,7 +38,22 @@
       swatches.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
       const names = { a: 'A — Navy & Gold', b: 'B — Cream & Bronze', c: 'C — Charcoal & Copper', d: 'D — Ivory, Emerald & Brass' };
       toast('Палитра: ' + names[theme]);
+      if (switcher) switcher.classList.remove('open');
     }));
+    const psToggle = document.getElementById('ps-toggle');
+    if (psToggle && switcher) {
+      psToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = switcher.classList.toggle('open');
+        psToggle.setAttribute('aria-expanded', String(isOpen));
+      });
+      document.addEventListener('click', (e) => {
+        if (switcher.classList.contains('open') && !switcher.contains(e.target)) {
+          switcher.classList.remove('open');
+          psToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
   }
 
   /* ---------------- Mobile nav ---------------- */
@@ -45,8 +61,12 @@
     const btn = document.getElementById('burger-btn');
     const nav = document.getElementById('main-nav');
     if (!btn || !nav) return;
-    btn.addEventListener('click', () => nav.classList.toggle('open'));
-    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+    function open() { nav.classList.add('open'); document.body.classList.add('nav-open'); }
+    function close() { nav.classList.remove('open'); document.body.classList.remove('nav-open'); }
+    btn.addEventListener('click', () => { nav.classList.contains('open') ? close() : open(); });
+    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+    // клик по свободному месту меню (не по ссылке) тоже закрывает его
+    nav.addEventListener('click', (e) => { if (e.target === nav) close(); });
   }
 
   /* ---------------- Favorites ---------------- */
@@ -236,6 +256,43 @@
   }
 
   /* ---------------- Generic demo forms (show success block) ---------------- */
+  /* ---------------- Телефон: только цифры и плюс в начале ---------------- */
+  function initPhoneInputs() {
+    document.querySelectorAll('input[type="tel"]').forEach(inp => {
+      inp.setAttribute('inputmode', 'tel');
+      inp.addEventListener('input', () => {
+        let v = inp.value.replace(/[^\d+]/g, '');
+        v = v[0] === '+' ? '+' + v.slice(1).replace(/\+/g, '') : v.replace(/\+/g, '');
+        inp.value = v;
+      });
+    });
+  }
+
+  /* ---------------- "Позвонить" на десктопе — показать номер вместо мёртвого tel: ---------------- */
+  function initCallButtons() {
+    const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!isDesktop) return;
+    document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+      const telHref = link.getAttribute('href');
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelectorAll('.call-popover').forEach(p => p.remove());
+        const pop = document.createElement('div');
+        pop.className = 'call-popover';
+        pop.innerHTML = `<span>Наш телефон</span><a href="${telHref}">${ACB.PHONE}</a>`;
+        const cs = getComputedStyle(link);
+        if (cs.position === 'static') link.style.position = 'relative';
+        link.appendChild(pop);
+        requestAnimationFrame(() => pop.classList.add('show'));
+        setTimeout(() => {
+          document.addEventListener('click', function handler(ev) {
+            if (!link.contains(ev.target)) { pop.remove(); document.removeEventListener('click', handler); }
+          });
+        }, 0);
+      });
+    });
+  }
+
   function initForms() {
     document.querySelectorAll('form[data-demo-form]').forEach(form => {
       form.addEventListener('submit', (e) => {
@@ -255,10 +312,11 @@
     initFavorites();
   });
   document.addEventListener('DOMContentLoaded', () => {
-    initPalette();
     initCalculators();
     initHotspotViewers();
     initBooking();
     initForms();
+    initPhoneInputs();
+    initCallButtons();
   });
 })();

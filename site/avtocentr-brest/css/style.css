@@ -5,6 +5,18 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 html, body { overflow-x: hidden; }
+body.nav-open { overflow: hidden; }
+
+.call-popover {
+  position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(-6px);
+  background: var(--brand-navy); color: #fff; padding: 10px 18px; border-radius: var(--radius-md);
+  white-space: nowrap; box-shadow: var(--shadow-md);
+  opacity: 0; pointer-events: none; transition: all .15s var(--ease); z-index: 60;
+  display: flex; flex-direction: column; gap: 3px; align-items: center;
+}
+.call-popover span { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .04em; }
+.call-popover a { color: var(--color-accent, #c9a24b); font-size: var(--fs-md); font-weight: 700; }
+.call-popover.show { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
 
 /* Grid items default to min-width:auto, which sizes the track to fit the
    widest content (e.g. the hotspot strip) instead of the available space —
@@ -12,6 +24,13 @@ html, body { overflow-x: hidden; }
 .hero .container > *, .trust-grid > *, .filters > *, .car-grid > *, .car-detail > *,
 .steps > *, .form-grid > *, .review-grid > *, .footer-grid > *, .about-grid > *,
 .stat-row > *, .check-list > *, .contacts-grid > *, .grid-2 > * {
+  min-width: 0;
+}
+
+/* Same bug, flexbox flavour: text-bearing flex children also default to
+   min-width:auto and refuse to shrink below their content's natural width. */
+.banner > *, .detail-title > *, .results-bar > *, .footer-bottom > *,
+.calc-result > *, .picker-hint > * {
   min-width: 0;
 }
 
@@ -128,12 +147,18 @@ h1, h2, h3, .font-serif { font-family: var(--font-serif); font-weight: 700; }
 }
 .fab-call { background: var(--color-accent); color: var(--color-accent-contrast); }
 .fab-wa { background: #25D366; color: #fff; }
-.fab svg { width: 28px; height: 28px; }
+.fab-ig { background: #C13584; color: #fff; }
+.fab svg { width: 28px; height: 28px; stroke: currentColor; }
 .contact-bar-mobile { display: none; }
 
 /* ---------- Palette switcher (демо-инструмент для выбора клиентом) ---------- */
-.palette-switcher {
-  position: fixed; left: var(--sp-5); bottom: var(--sp-5); z-index: 50;
+.palette-switcher { position: fixed; left: var(--sp-5); bottom: var(--sp-5); z-index: 50; }
+.ps-toggle {
+  display: none; width: 52px; height: 52px; border-radius: 50%; align-items: center; justify-content: center;
+  background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: var(--shadow-md); color: var(--color-accent);
+}
+.ps-toggle svg { width: 24px; height: 24px; }
+.ps-panel {
   background: var(--color-surface); border: 1px solid var(--color-border);
   border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
   padding: var(--sp-3); display: flex; flex-direction: column; gap: var(--sp-2);
@@ -290,6 +315,7 @@ h1, h2, h3, .font-serif { font-family: var(--font-serif); font-weight: 700; }
 .buy-box .price-sub { color: var(--color-text-muted); margin-top: 2px; }
 .buy-box .badge-row { margin: var(--sp-5) 0; }
 .buy-box .actions { display: flex; flex-direction: column; gap: var(--sp-3); margin-top: var(--sp-5); }
+.buy-box .actions .btn { white-space: normal; line-height: 1.25; padding: 12px var(--sp-4); height: auto; }
 
 /* ---------- Leasing calculator ---------- */
 .calc-widget { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--sp-6); }
@@ -357,7 +383,7 @@ h1, h2, h3, .font-serif { font-family: var(--font-serif); font-weight: 700; }
 .footer-bottom { margin-top: var(--sp-7); padding-top: var(--sp-5); border-top: 1px solid var(--color-border); display: flex; justify-content: space-between; color: var(--color-text-muted); font-size: var(--fs-sm); flex-wrap: wrap; gap: var(--sp-3); }
 .social-row { display: flex; gap: var(--sp-3); }
 .social-row a { width: 42px; height: 42px; border-radius: 50%; background: var(--color-surface); border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; }
-.social-row svg { width: 20px; height: 20px; }
+.social-row svg { width: 20px; height: 20px; stroke: currentColor; }
 
 /* ---------- Favorites drawer ---------- */
 .drawer-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 60; opacity: 0; pointer-events: none; transition: opacity var(--dur) var(--ease); }
@@ -396,6 +422,8 @@ h1, h2, h3, .font-serif { font-family: var(--font-serif); font-weight: 700; }
 /* ---------- About ---------- */
 .about-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: var(--sp-5); }
 .about-photo { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4/3; }
+.about-photo-logo { display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--brand-navy), #1c2748); }
+.about-photo-logo img { width: 42%; height: auto; object-fit: contain; filter: drop-shadow(0 14px 32px rgba(0,0,0,.4)); }
 .stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--sp-5); margin-top: var(--sp-7); text-align: center; }
 .stat-row .num { font-family: var(--font-serif); font-size: var(--fs-2xl); font-weight: 700; color: var(--color-accent); }
 .stat-row .cap { color: var(--color-text-muted); font-size: var(--fs-sm); margin-top: 4px; }
@@ -460,6 +488,11 @@ h1, h2, h3, .font-serif { font-family: var(--font-serif); font-weight: 700; }
   .contact-bar-mobile a { flex: 1; }
   .palette-switcher { left: var(--sp-3); bottom: 86px; }
   body { padding-bottom: 78px; }
+
+  .ps-toggle { display: flex; }
+  .ps-panel { display: none; position: absolute; left: 0; bottom: 62px; min-width: 186px; }
+  .palette-switcher.open .ps-panel { display: flex; }
+  .palette-switcher.open .ps-toggle { border-color: var(--color-accent); color: var(--color-accent); }
 }
 
 .burger {

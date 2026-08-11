@@ -8,8 +8,8 @@
 <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css?v=20260810b">
-<link rel="stylesheet" href="css/style.css?v=20260810b">
+<link rel="stylesheet" href="css/tokens.css?v=20260810c">
+<link rel="stylesheet" href="css/style.css?v=20260810c">
 </head>
 <body>
 <div id="site-header"></div>
@@ -25,8 +25,8 @@
 
 <section class="section" style="padding-top:0">
   <div class="container about-grid">
-    <div class="about-photo">
-      <img src="" data-about-img alt="Площадка АвтоЦентр Брест" style="width:100%;height:100%;object-fit:cover">
+    <div class="about-photo about-photo-logo">
+      <img src="assets/logo.svg" alt="АвтоЦентр Брест">
     </div>
     <div>
       <h2 class="font-serif" style="font-size:var(--fs-2xl)">Почему выбирают нас</h2>
@@ -67,12 +67,11 @@
 <div id="palette-switcher-root"></div>
 <div id="drawer-root"></div>
 
-<script src="js/cars-data.js?v=20260810b"></script>
-<script src="js/partials.js?v=20260810b"></script>
-<script src="js/main.js?v=20260810b"></script>
+<script src="js/cars-data.js?v=20260810c"></script>
+<script src="js/partials.js?v=20260810c"></script>
+<script src="js/main.js?v=20260810c"></script>
 <script>
   ACB.mountLayout('');
-  document.querySelector('[data-about-img]').src = ACB.svgPlaceholder({ hueA: 216, hueB: 230, label: 'Площадка АвтоЦентр Брест', icon: 'car', w: 900, h: 700 });
 </script>
 </body>
 </html>

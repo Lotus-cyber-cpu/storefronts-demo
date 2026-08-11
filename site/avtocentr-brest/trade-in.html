@@ -8,8 +8,8 @@
 <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css?v=20260810b">
-<link rel="stylesheet" href="css/style.css?v=20260810b">
+<link rel="stylesheet" href="css/tokens.css?v=20260810c">
+<link rel="stylesheet" href="css/style.css?v=20260810c">
 </head>
 <body>
 <div id="site-header"></div>
@@ -29,8 +29,8 @@
       <form class="form-card" data-demo-form="tradein-success">
         <div class="form-grid">
           <div class="field"><label>Марка и модель</label><input type="text" placeholder="Например, Toyota Corolla" required></div>
-          <div class="field"><label>Год выпуска</label><input type="number" placeholder="2018" required></div>
-          <div class="field"><label>Пробег, км</label><input type="number" placeholder="95000"></div>
+          <div class="field"><label>Год выпуска</label><input type="number" inputmode="numeric" placeholder="2018" min="1970" max="2026" required></div>
+          <div class="field"><label>Пробег, км</label><input type="number" inputmode="numeric" placeholder="95000" min="0" required></div>
           <div class="field"><label>Телефон</label><input type="tel" placeholder="+375 29 000-00-00" required></div>
           <div class="field full">
             <label>Фото автомобиля</label>
@@ -39,7 +39,7 @@
             </div>
             <input type="file" id="upload-input" accept="image/*" multiple hidden>
           </div>
-          <div class="field full"><label>Комментарий</label><textarea placeholder="Состояние, комплектация, есть ли повреждения"></textarea></div>
+          <div class="field full"><label>Комментарий</label><textarea placeholder="Состояние, комплектация, есть ли повреждения" required></textarea></div>
         </div>
         <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-top:20px">Получить оценку</button>
       </form>
@@ -75,9 +75,9 @@
 <div id="palette-switcher-root"></div>
 <div id="drawer-root"></div>
 
-<script src="js/cars-data.js?v=20260810b"></script>
-<script src="js/partials.js?v=20260810b"></script>
-<script src="js/main.js?v=20260810b"></script>
+<script src="js/cars-data.js?v=20260810c"></script>
+<script src="js/partials.js?v=20260810c"></script>
+<script src="js/main.js?v=20260810c"></script>
 <script>
   ACB.mountLayout('trade-in.html');
   const drop = document.getElementById('upload-drop');
